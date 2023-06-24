@@ -1,39 +1,39 @@
-document.addEventListener("DOMContentLoaded", function() {
-    var usernameForm = document.getElementById("usernameForm");
-    var gameLink = document.getElementById("gameLink");
-    var generateLinkButton = document.getElementById("generateLinkButton");
-    var startGameButton = document.getElementById("startGameButton");
-    var copyButton = document.getElementById("copyButton");
+$(document).ready(function() {
+    var usernameForm = $("#usernameForm");
+    var gameLink = $("#gameLink");
+    var generateLinkButton = $("#generateLinkButton");
+    var startGameButton = $("#startGameButton");
+    var copyButton = $("#copyButton");
     var queryParams = new URLSearchParams(window.location.search);
     var username = queryParams.get("username");
 
     if (username) {
-            // If username is provided in the query, display game link with username
-            var gameURL = window.location.origin + "/WP23/WP_fp/gamepage.php?username=" + encodeURIComponent(username);
-            gameLink.style.display = "block";
-            linkInput.value = gameURL;
-            copyButton.style.display = "inline-block";
-            startGameButton.style.display = "inline-block";
-        }
-
-    generateLinkButton.addEventListener("click", function(event) {
-        event.preventDefault();
-        username = document.getElementById("username").value;
+        // If username is provided in the query, display game link with username
         var gameURL = window.location.origin + "/WP23/WP_fp/gamepage.php?username=" + encodeURIComponent(username);
-        gameLink.style.display = "block";
-        linkInput.value = gameURL;
-        copyButton.style.display = "inline-block";
-        startGameButton.style.display = "inline-block";
+        gameLink.css("display", "block");
+        linkInput.val(gameURL);
+        copyButton.css("display", "inline-block");
+        startGameButton.css("display", "inline-block");
+    }
+
+    generateLinkButton.on("click", function(event) {
+        event.preventDefault();
+        username = $("#username").val();
+        var gameURL = window.location.origin + "/WP23/WP_fp/gamepage.php?username=" + encodeURIComponent(username);
+        gameLink.css("display", "block");
+        linkInput.val(gameURL);
+        copyButton.css("display", "inline-block");
+        startGameButton.css("display", "inline-block");
     });
 
-    startGameButton.addEventListener("click", function(event) {
+    startGameButton.on("click", function(event) {
         event.preventDefault();
-        username = document.getElementById("username").value;
+        username = $("#username").val();
         var gameURL = window.location.origin + "/WP23/WP_fp/gamepage.php?username=" + encodeURIComponent(username);
         window.open(gameURL, "_blank");
     });
 
-    copyButton.addEventListener("click", function() {
+    copyButton.on("click", function() {
         // Copy the game URL to the clipboard
         linkInput.select();
         document.execCommand("copy");
