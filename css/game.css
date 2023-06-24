@@ -1,0 +1,76 @@
+.container {
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+h1 {
+    font-size: 36px;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.player-board {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.player-board h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.player-board button {
+    width: 40px;
+    height: 40px;
+    margin: 5px;
+    border: none;
+    border-radius: 50%;
+    background-color: #eee;
+    font-size: 18px;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.player-board button.closed {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.player-board button.selected {
+    background-color: #ffcc00;
+    color: #fff;
+}
+
+.dice {
+    margin-bottom: 20px;
+}
+
+.dice h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.dice button {
+    padding: 10px 20px;
+    font-size: 18px;
+    color: #fff;
+    background-color: #ffcc00;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.dice button:hover {
+    background-color: #ff9900;
+}
+
+.message {
+    font-size: 18px;
+    color: #333;
+}
