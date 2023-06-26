@@ -8,12 +8,11 @@ $navigation = array(
         'Game' => 'gamepage.php'
     )
 );
-
 $page_title = 'Shut the box';
 include 'tpl/head.php';?>
 
 <head>
-    <title>Shut the Box - Two-Player Game</title>
+    <title>Two-Player Game</title>
     <link rel="stylesheet" type="text/css" href="css/game.css">
     <script src="scripts/game.js"></script>
 </head>
@@ -41,28 +40,6 @@ include 'tpl/head.php';?>
         <p id="messageText"></p>
     </div>
 </div>
-
-
-<!--Chat-->
-<div class="form-container" id="chat-container">
-    <!-- output for chat -->
-    <div class="col-md-12" id="message_box">
-    </div>
-
-    <!-- input fields for chat -->
-    <form class="form-popup" method="post">
-        <input type="text" id="name" placeholder="Type name.." name="name" required>
-        <div class="invalid-feedback">Please enter your name</div>
-        <textarea id="message" placeholder="Type message.." name="message"></textarea>
-        <div class="invalid-feedback">Please enter a message</div>
-        <button type="button" class="btn-primary" name="submit" id="submit-button">Submit</button>
-        <!-- button to close chat -->
-        <button type="button" class="btn cancel" id="close-button">Close</button>
-    </form>
-</div>
-
-<!-- button to open chat -->
-<button type="button" id="open-button">Open chat</button>
 
 
 </body>
