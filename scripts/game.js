@@ -1,37 +1,29 @@
-var rollButton = $("#rollButton");
-var diceResult = $("#diceResult");
-var messageText = $("#messageText");
+$(document).ready(function() {
+    let rollButton = $("#rollButton");
+    let diceResult = $("#diceResult");
+    let diceValue;
 
-rollButton.on("click", function() {
-    //
-});
+    function rollDice() {
+        diceValue = Math.floor(Math.random() * 11) + 2;
+        diceResult.text("Dice result: " + diceValue);
 
-var submitButton = $("#submit-choice");
-submitButton.on("click", function() {
-    //
-});
-
-var tileButtons = $(".player-board button");
-
-tileButtons.on("click", function() {
-    //
-});
-
-
-var requestData = {
-    selectedTiles: selectedTiles,
-    diceValue: diceValue
-};
-
-$.ajax({
-    url: "scripts/ajax_handler.php",
-    method: "POST",
-    data: requestData,
-    success: function(response) {
-        //
-    },
-    error: function(error) {
-        console.error("Error updating game state:", error);
-        //
+        $.ajax({
+            url: "ajax_handler.php",
+            method: "POST",
+            data: {diceValue: diceValue.toString()},
+            dataType: "text",
+            success: function(response) {
+                console.log("gelukt");
+            },
+            error: function(error) {
+                console.error("nee", error);
+            }
+        });
     }
+
+    rollButton.on("click", rollDice);
 });
+
+
+
+
