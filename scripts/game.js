@@ -7,6 +7,7 @@ $(document).ready(function() {
         diceValue = Math.floor(Math.random() * 11) + 2;
         diceResult.text("Dice result: " + diceValue);
 
+
         let gameState;
 
         $.ajax({
@@ -21,6 +22,10 @@ $(document).ready(function() {
                 console.error("nee", error);
             }
         });
+
+        // Hide roll button and show submit button
+        rollButton.hide();
+        submitButton.show();
     }
 
     function updateGameState() {
@@ -83,7 +88,6 @@ $(document).ready(function() {
         }
     });
 
-
     var submitButton = $("#submit-choice");
     submitButton.on("click", function () {
         var currentPlayerTiles = currentPlayer === "Player 1" ? player1Tiles : player2Tiles;
@@ -126,6 +130,8 @@ $(document).ready(function() {
                     }
                 });
             });
+
+
         }
 
         // Check if sum of open tiles is more than dice value
@@ -157,6 +163,10 @@ $(document).ready(function() {
             // Switch to next player
             currentPlayer = currentPlayer === "Player 1" ? "Player 2" : "Player 1";
             messageText.text(currentPlayer + "'s turn. Select tiles and roll again.");
+
+            // Hide submit button and show roll button
+            submitButton.hide();
+            rollButton.show();
         });
     });
 });

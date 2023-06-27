@@ -30,7 +30,7 @@ include 'tpl/head.php';?>
         <!-- Player 2's tiles/buttons -->
     </div>
     <div class="submit">
-        <button id="submit-choice">Submit</button>
+        <button id="submit-choice">Submit choice</button>
     </div>
     <div class="dice">
         <p id="diceResult">Dice result: </p>
@@ -44,6 +44,6 @@ include 'tpl/head.php';?>
 
 </body>
 <?php
-include __DIR__ . '/scripts/ajax_handler.php';
+include __DIR__ . '/scripts/ajax.handler.php';
 include __DIR__ . '/tpl/footer.php';
 ?>

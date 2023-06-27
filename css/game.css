@@ -70,6 +70,22 @@ h1 {
     background-color: #11626A;
 }
 
+.submit button {
+    display: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    color: #fff;
+    background-color: #1B8791;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.submit button:hover {
+    background-color: #11626A;
+}
+
 .message {
     font-size: 18px;
     color: #333;
