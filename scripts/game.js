@@ -7,10 +7,10 @@ $(document).ready(function() {
         diceValue = Math.floor(Math.random() * 11) + 2;
         diceResult.text("Dice result: " + diceValue);
 
-        console.log("diceValue:", diceValue);
+        let gameState;
 
         $.ajax({
-            url: "scripts/ajax_handler.php",
+            url: "scripts/ajax.handler.php",
             method: "POST",
             data: {diceValue: diceValue.toString()},
             dataType: "text",
@@ -23,7 +23,25 @@ $(document).ready(function() {
         });
     }
 
+    function updateGameState() {
+        $.ajax({
+            url: "scripts/update_game_state.php",
+            method: "GET",
+            dataType: "json",
+            success: function(gameState) {
+                diceResult.text("Dice result: " + gameState.diceValue);
+                console.log("wel gelukt");
+            },
+            error: function(error) {
+                console.error("niet gelukt", error);
+            }
+        });
+    }
     rollButton.on("click", rollDice);
+    function updateGame(gameState) {
+    }
+    setInterval(updateGameState, 2000)
+
     var player1Board = $("#player1");
     var player2Board = $("#player2");
 
@@ -88,21 +106,6 @@ $(document).ready(function() {
             diceValue: diceValue
         };
 
-        $.ajax({
-            url: "scripts/ajax.handler.php",
-            method: "POST",
-            data: requestData,
-            success: function (response) {
-                // Handle the response from the server
-                console.log(requestData);
-                // ...
-            },
-            error: function (error) {
-                console.error("Error updating game state:", error);
-                // ...
-            }
-        });
-
         // Check if selected tiles sum up to dice value
         var sum = selectedTiles.reduce(function (acc, curr) {
             return acc + curr;
@@ -157,5 +160,4 @@ $(document).ready(function() {
         });
     });
 });
-
 
