@@ -1,7 +1,7 @@
 $(document).ready(function() {
     let rollButton = $("#rollButton");
     //let diceResult = $("#diceResult");
-    //let diceValue;
+    let diceValue;
 
     function rollDice() {
         diceValue = Math.floor(Math.random() * 11) + 2;
@@ -65,11 +65,6 @@ $(document).ready(function() {
         }
     });
 
-    var diceValue;
-    rollButton.on("click", function () {
-        diceValue = Math.floor(Math.random() * 11) + 2;
-        diceResult.text("Dice result: " + diceValue);
-    });
 
     var submitButton = $("#submit-choice");
     submitButton.on("click", function () {
@@ -99,7 +94,7 @@ $(document).ready(function() {
             data: requestData,
             success: function (response) {
                 // Handle the response from the server
-                // console.log(requestData);
+                console.log(requestData);
                 // ...
             },
             error: function (error) {
@@ -131,10 +126,10 @@ $(document).ready(function() {
         }
 
         // Check if sum of open tiles is more than dice value
-        var openTiles = ['hey',];
+        openTiles = ['hey',];
         tileButtons.each(function () {
             var player = $(this).attr("data-player");
-            if (player === currentPlayer && !($(this).hasClass("closed"))) {
+            if (player === currentPlayer && ($(this).hasClass("closed"))) {
                 openTiles.push(tile);
                 console.log(openTiles);
             }
