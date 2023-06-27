@@ -29,7 +29,7 @@ h1 {
     margin: 5px;
     border: none;
     border-radius: 50%;
-    background-color: #eee;
+    background-color: #A3DBE2;
     font-size: 18px;
     color: #333;
     cursor: pointer;
@@ -37,7 +37,7 @@ h1 {
 }
 
 .player-board button.closed {
-    background-color: #ccc;
+    background-color: #466E75;
     cursor: not-allowed;
 }
 
@@ -59,7 +59,7 @@ h1 {
     padding: 10px 20px;
     font-size: 18px;
     color: #fff;
-    background-color: #ffcc00;
+    background-color: #1B8791;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -67,7 +67,7 @@ h1 {
 }
 
 .dice button:hover {
-    background-color: #ff9900;
+    background-color: #11626A;
 }
 
 .message {
