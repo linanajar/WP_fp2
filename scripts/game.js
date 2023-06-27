@@ -10,7 +10,7 @@ $(document).ready(function() {
         console.log("diceValue:", diceValue);
 
         $.ajax({
-            url: "scripts/ajax_handler.php",
+            url: "scripts/ajax.handler.php",
             method: "POST",
             data: {diceValue: diceValue.toString()},
             dataType: "text",
@@ -79,9 +79,9 @@ $(document).ready(function() {
             if (player === currentPlayer && tile !== -1 && $(this).hasClass("selected")) {
                 selectedTiles.push(tile);
                 $(this).removeClass("selected");
-                //console.log(selectedTiles);
             }
         });
+        console.log(selectedTiles)
 
         var requestData = {
             selectedTiles: selectedTiles,
@@ -94,7 +94,7 @@ $(document).ready(function() {
             data: requestData,
             success: function (response) {
                 // Handle the response from the server
-                console.log(requestData);
+                //console.log(requestData);
                 // ...
             },
             error: function (error) {
@@ -129,7 +129,8 @@ $(document).ready(function() {
         openTiles = ['hey',];
         tileButtons.each(function () {
             var player = $(this).attr("data-player");
-            if (player === currentPlayer && ($(this).hasClass("closed"))) {
+            var tile = parseInt($(this).attr("data-tile"));
+            if (player === currentPlayer && !($(this).hasClass("closed"))) {
                 openTiles.push(tile);
                 console.log(openTiles);
             }
