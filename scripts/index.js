@@ -3,7 +3,7 @@ $(document).ready(function() {
     var startGameButton = $("#startGameButton");
     var copyButton = $("#copyButton");
     var usernameInput = $("#username");
-    var linkInput = $("#linkInput");
+    let linkInput = $("#linkInput");
 
     // Define function to generate link
     function generateLink(usernameInput, startGameButton, copyButton) {
@@ -28,7 +28,7 @@ $(document).ready(function() {
     // Define function to copy url
     function copyURL() {
         // Copy the game URL to the clipboard
-        linkInput.val().select();
+        linkInput.select();
         document.execCommand("copy");
         window.alert("Game URL copied to clipboard!");
     }
