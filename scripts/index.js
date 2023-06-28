@@ -28,8 +28,8 @@ $(document).ready(function() {
         window.alert("Game URL copied to clipboard!");
     }
 
+    // If username is provided in the query, make the buttons work
     if (username !== null) {
-        // If username is provided in the query, make the buttons work
         generateLinkButton.on("click", generateLink);
         startGameButton.on("click", startGame);
         copyButton.on("click", copyURL);
