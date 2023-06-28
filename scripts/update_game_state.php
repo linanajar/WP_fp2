@@ -29,7 +29,7 @@
 //        echo 'geen dicevalue';
 //    }
 //} else {
-//    echo 'NOpee';
+//    echo 'Nope';
 //}
 
 
@@ -59,6 +59,6 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
         echo 'geen dicevalue';
     }
 } else {
-    echo 'NOpee';
+    echo 'nope';
 }
 
