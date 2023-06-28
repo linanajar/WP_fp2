@@ -1,3 +1,16 @@
+// Generates player boards
+function generatePlayerBoard(board, playerName, playerTiles) {
+    for (var i = 1; i <= 9; i++) {
+        var button = $("<button></button>");
+        button.text(i);
+        button.attr("data-player", playerName);
+        button.attr("data-tile", i);
+        board.append(button);
+        playerTiles.push(i); // Assign the tile to the respective player's array
+    }
+}
+
+// check if game should be ended
 function checkEndGame(tileButtons, diceValue, currentPlayer) {
     // Check if sum of open tiles is less than dice value
     openTiles = [];
@@ -16,6 +29,9 @@ function checkEndGame(tileButtons, diceValue, currentPlayer) {
         return;
     }
 }
+
+
+
 
 $(document).ready(function() {
     let rollButton = $("#rollButton");
@@ -51,17 +67,7 @@ $(document).ready(function() {
     var player1Tiles = [];
     var player2Tiles = [];
 
-    // Generates player boards
-    function generatePlayerBoard(board, playerName, playerTiles) {
-        for (var i = 1; i <= 9; i++) {
-            var button = $("<button></button>");
-            button.text(i);
-            button.attr("data-player", playerName);
-            button.attr("data-tile", i);
-            board.append(button);
-            playerTiles.push(i); // Assign the tile to the respective player's array
-        }
-    }
+
 
     // Generates boards with tiles/buttons
     generatePlayerBoard(player1Board, "Player 1", player1Tiles);
