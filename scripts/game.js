@@ -30,7 +30,14 @@ function rollDice() {
         }
     });
     checkEndGame(tileButtons, diceValue, currentPlayer)
+    toggleButtons();
 };
+
+//toggle visibility of roll and hide button
+function toggleButtons() {
+    $("#rollButton").toggle();
+    $("#submit-choice").toggle();
+}
 
 // check if game should be ended
 function checkEndGame(tileButtons, diceValue, currentPlayer) {
@@ -144,9 +151,9 @@ $(document).ready(function() {
             });
         }
 
-            // Switch to next player
-            currentPlayer = currentPlayer === "Player 1" ? "Player 2" : "Player 1";
-            messageText.text(currentPlayer + "'s turn. Select tiles and roll again.");
+        // Switch to next player
+        currentPlayer = currentPlayer === "Player 1" ? "Player 2" : "Player 1";
+        messageText.text(currentPlayer + "'s turn. Select tiles and roll again.");
         });
     });
 
