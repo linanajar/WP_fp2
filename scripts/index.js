@@ -10,20 +10,14 @@ $(document).ready(function() {
     if (username) {
         // If username is provided in the query, display game link with username
         var gameURL = window.location.origin + "/WP23/WP_fp2/gamepage.php?username=" + encodeURIComponent(username);
-        gameLink.css("display", "block");
         linkInput.val(gameURL);
-        copyButton.css("display", "inline-block");
-        startGameButton.css("display", "inline-block");
     }
 
     generateLinkButton.on("click", function(event) {
         event.preventDefault();
         username = $("#username").val();
         var gameURL = window.location.origin + "/WP23/WP_fp2/gamepage.php?username=" + encodeURIComponent(username);
-        gameLink.css("display", "block");
         linkInput.val(gameURL);
-        copyButton.css("display", "inline-block");
-        startGameButton.css("display", "inline-block");
     });
 
     startGameButton.on("click", function(event) {

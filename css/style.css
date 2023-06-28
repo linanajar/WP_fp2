@@ -22,13 +22,19 @@ footer {
     cursor: pointer;
 }
 
+#gameLink {
+    display: block;
+}
+
 #copyButton {
+    display: inline-block;
     background-color: steelblue;
     border-radius: 4px;
     cursor: pointer;
 }
 
 #startGameButton {
+    display: inline-block;
     color: white;
     background-color: seagreen;
     border-radius: 4px;
