@@ -79,49 +79,52 @@ $(document).ready(function() {
         var player = $(this).attr("data-player");
         var tile = parseInt($(this).attr("data-tile"));
 
+        // Select tile button
         if (player === currentPlayer && tile !== -1) {
             // Toggle the selection of the tile
             $(this).toggleClass("selected");
         }
     });
 
+    // Random Ajax ?????
+    $.ajax({
+        url: "scripts/ajax.handler.php",
+        method: "POST",
+        data: requestData,
+        success: function (response) {
+            // Handle the response from the server
+            //console.log(requestData);
+            // ...
+        },
+        error: function (error) {
+            console.error("Error updating game state:", error);
+            // ...
+        }
+    });
 
+    // Submit button handler
     var submitButton = $("#submit-choice");
     submitButton.on("click", function () {
         var currentPlayerTiles = currentPlayer === "Player 1" ? player1Tiles : player2Tiles;
 
-        // Find selected tiles
+        // Find selected tiles and check if they are from the correct player and select them
         var selectedTiles = [];
         tileButtons.each(function () {
             var player = $(this).attr("data-player");
             var tile = parseInt($(this).attr("data-tile"));
 
+            // deselect if clicked again
             if (player === currentPlayer && tile !== -1 && $(this).hasClass("selected")) {
                 selectedTiles.push(tile);
                 $(this).removeClass("selected");
             }
         });
-        console.log(selectedTiles)
 
+        //store data in variable
         var requestData = {
             selectedTiles: selectedTiles,
             diceValue: diceValue
         };
-
-        $.ajax({
-            url: "scripts/ajax.handler.php",
-            method: "POST",
-            data: requestData,
-            success: function (response) {
-                // Handle the response from the server
-                //console.log(requestData);
-                // ...
-            },
-            error: function (error) {
-                console.error("Error updating game state:", error);
-                // ...
-            }
-        });
 
         // Check if selected tiles sum up to dice value
         var sum = selectedTiles.reduce(function (acc, curr) {
