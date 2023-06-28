@@ -1,3 +1,22 @@
+function checkEndGame(tileButtons, diceValue, currentPlayer) {
+    // Check if sum of open tiles is less than dice value
+    openTiles = [];
+    tileButtons.each(function () {
+        var player = $(this).attr("data-player");
+        var tile = parseInt($(this).attr("data-tile"));
+        if (player === currentPlayer && !($(this).hasClass("selected"))) {
+            openTiles.push(tile);
+        }})
+    // Check if open tiles sum up to more than dice value
+    var sum = openTiles.reduce(function (acc, curr) {
+        return acc + curr;
+    }, 0);
+    if(sum < diceValue) {
+        window.location.href = "http://localhost:8888/WP23/WP_fp/endpage.php";
+        return;
+    }
+}
+
 $(document).ready(function() {
     let rollButton = $("#rollButton");
     //let diceResult = $("#diceResult");
@@ -21,22 +40,7 @@ $(document).ready(function() {
                 console.error("nee", error);
             }
         });
-        // Check if sum of open tiles is less than dice value
-        openTiles = [];
-        tileButtons.each(function () {
-            var player = $(this).attr("data-player");
-            var tile = parseInt($(this).attr("data-tile"));
-            if (player === currentPlayer && !($(this).hasClass("selected"))) {
-                openTiles.push(tile);
-            }})
-        // Check if open tiles sum up to more than dice value
-        var sum = openTiles.reduce(function (acc, curr) {
-            return acc + curr;
-        }, 0);
-        if(sum < diceValue) {
-            window.location.href = "http://localhost:8888/WP23/WP_fp/endpage.php";
-            return;
-        }
+        checkEndGame(tileButtons, diceValue, currentPlayer)
     }
 
     rollButton.on("click", rollDice);
@@ -140,25 +144,6 @@ $(document).ready(function() {
                 });
             });
         }
-
-
-            if (currentPlayerTiles.every(function (tile) {
-                return tile === -1;
-            })) {
-                // Display a message and determine the winner
-                // messageText.text(currentPlayer + " wins!");
-                // rollButton.prop("disabled", true);
-
-                // Determine the winner
-                var winnerUsername = currentPlayer;
-
-                // Save the winnerUsername in localStorage
-                localStorage.setItem('winnerUsername', winnerUsername);
-
-                // Redirect to endgame.php
-                window.location.href = "http://localhost:8888/WP23/WP_fp/endpage.php";
-                return;
-            }
 
             // Switch to next player
             currentPlayer = currentPlayer === "Player 1" ? "Player 2" : "Player 1";
