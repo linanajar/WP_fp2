@@ -3,20 +3,25 @@ $(document).ready(function() {
     var startGameButton = $("#startGameButton");
     var copyButton = $("#copyButton");
     var usernameInput = $("#username");
-    var linkInput = $("#linkInput");
-    var username = usernameInput.val();
+    let linkInput = $("#linkInput");
 
     // Define function to generate link
-    function  generateLink(){
-        username = usernameInput.val();
-        var gameURL = window.location.origin + "/WP23/WP_fp2/gamepage.php?username=" + encodeURIComponent(username);
-        linkInput.val(gameURL);
+    function generateLink(usernameInput, startGameButton, copyButton) {
+        let username = usernameInput.val();
+        if (username !== '') {
+            let gameURL = window.location.origin + "/WP23/WP_fp2/gamepage.php?username=" + encodeURIComponent(username)
+            linkInput.val(gameURL);
+            startGameButton.on("click", function() {
+                startGame(gameURL)
+            });
+            copyButton.on("click", copyURL)
+        } else {
+
+        }
     }
 
     // Define function to start game
-    function startGame() {
-        username = usernameInput.val();
-        var gameURL = window.location.origin + "/WP23/WP_fp2/gamepage.php?username=" + encodeURIComponent(username);
+    function startGame(gameURL) {
         window.open(gameURL, "_blank");
     }
 
@@ -29,9 +34,7 @@ $(document).ready(function() {
     }
 
     // If username is provided in the query, make the buttons work
-    if (username !== null) {
-        generateLinkButton.on("click", generateLink);
-        startGameButton.on("click", startGame);
-        copyButton.on("click", copyURL);
-    }
-});
+    generateLinkButton.on("click", function () {
+        generateLink(usernameInput, startGameButton, copyButton)
+    });
+})
