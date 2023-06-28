@@ -18,11 +18,13 @@ function rollDice() {
     diceResult.text("Dice result: " + diceValue);
     console.log("diceValue:", diceValue);
 
-    // Post diceValue to gameState.json to retrieve later
+    // Posts diceValue and currentPlayer to gameState.json to retrieve later
     $.ajax({
-        url: "scripts/ajax.handler.php",
+        url: "scripts/add_dicevalue_currentplayer.php",
         method: "POST",
-        data: {diceValue: diceValue.toString()},
+        data: {
+            diceValue: diceValue,
+            currentPlayer: currentPlayer},
         dataType: "text",
         success: function () {
             console.log("gelukt");
@@ -36,13 +38,22 @@ function rollDice() {
 }
 
 // Get diceValue from gameState.json
+// werkt niet
 function updateGameState() {
     $.ajax({
         url: "scripts/update_game_state.php",
         method: "GET",
         dataType: "json",
-        success: function(response) {
-            diceResult.text("Dice result: " + response.diceValue);
+        success: function(gameState) {
+            var diceValue = gameState.diceValue;
+            var currentPlayer = gameState.currentPlayer;
+
+            // Check if it works
+            console.log("diceValue:", diceValue);
+            console.log("currentPlayer:", currentPlayer);
+
+            $("#diceValue").text("Dice result: " + diceValue);
+            $("#currentPlayer").text("Current player: " + currentPlayer);
             console.log("wel gelukt");
         },
         error: function(error) {
@@ -73,7 +84,6 @@ function checkEndGame(tileButtons, diceValue, currentPlayer) {
     }, 0);
     if(sum < diceValue) {
         window.location.href = "http://localhost:8888/WP23/WP_fp2/endpage.php";
-        return;
     }
 }
 
@@ -82,10 +92,11 @@ $(document).ready(function() {
     // when the button to roll is clicked, roll the dice
     let rollButton = $("#rollButton");
     rollButton.on("click", rollDice);
-    function updateGame(gameState) {
-    }
-    setInterval(updateGameState, 2000)
-    let diceValue;
+
+    // retrieve diceValue and currentPlayer
+    updateGameState();
+    // setInterval(updateGameState, 2000)
+
     var player1Board = $("#player1");
     var player2Board = $("#player2");
     // Arrays to hold the player tiles
@@ -129,11 +140,6 @@ $(document).ready(function() {
             }
         });
         console.log(selectedTiles)
-
-        var requestData = {
-            selectedTiles: selectedTiles,
-            diceValue: diceValue
-        };
 
 
         // Check if selected tiles sum up to dice value
