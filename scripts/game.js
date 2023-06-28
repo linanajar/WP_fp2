@@ -21,6 +21,15 @@ $(document).ready(function() {
                 console.error("nee", error);
             }
         });
+        // Check if sum of open tiles is more than dice value
+        openTiles = [];
+        tileButtons.each(function () {
+            var player = $(this).attr("data-player");
+            var tile = parseInt($(this).attr("data-tile"));
+            if (player === currentPlayer && !($(this).hasClass("selected"))) {
+                openTiles.push(tile);
+                console.log(openTiles);
+            }})
     }
 
     rollButton.on("click", rollDice);
@@ -125,15 +134,7 @@ $(document).ready(function() {
             });
         }
 
-        // Check if sum of open tiles is more than dice value
-        openTiles = ['hey',];
-        tileButtons.each(function () {
-            var player = $(this).attr("data-player");
-            var tile = parseInt($(this).attr("data-tile"));
-            if (player === currentPlayer && !($(this).hasClass("closed"))) {
-                openTiles.push(tile);
-                console.log(openTiles);
-            }
+
             if (currentPlayerTiles.every(function (tile) {
                 return tile === -1;
             })) {
@@ -157,6 +158,5 @@ $(document).ready(function() {
             messageText.text(currentPlayer + "'s turn. Select tiles and roll again.");
         });
     });
-});
 
 
