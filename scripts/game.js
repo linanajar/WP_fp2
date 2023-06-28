@@ -52,29 +52,22 @@ function checkEndGame(tileButtons, diceValue, currentPlayer) {
 };
 
 
-
-
 $(document).ready(function() {
     let rollButton = $("#rollButton");
     var tileButtons = $(".player-board button");
     let diceValue;
-    let diceResult = $("#diceResult");
+    var player1Board = $("#player1");
+    var player2Board = $("#player2");
+    // Arrays to hold the player tiles
+    var player1Tiles = [];
+    var player2Tiles = [];
 
     // Generates boards with tiles/buttons
     generatePlayerBoard(player1Board, "Player 1", player1Tiles);
     generatePlayerBoard(player2Board, "Player 2", player2Tiles);
 
     rollButton.on("click", rollDice(tileButtons, currentPlayer));
-    var player1Board = $("#player1");
-    var player2Board = $("#player2");
-
-    // Arrays to hold the player tiles
-    var player1Tiles = [];
-    var player2Tiles = [];
-
-
-
-
+    let diceResult = $("#diceResult");
 
     var messageText = $("#messageText");
 
