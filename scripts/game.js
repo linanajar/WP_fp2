@@ -8,7 +8,28 @@ function generatePlayerBoard(board, playerName, playerTiles) {
         board.append(button);
         playerTiles.push(i); // Assign the tile to the respective player's array
     }
-}
+};
+
+function rollDice(tileButtons, currentPlayer, diceResult) {
+    diceValue = Math.floor(Math.random() * 11) + 2;
+    diceResult.text("Dice result: " + diceValue);
+
+    console.log("diceValue:", diceValue);
+
+    $.ajax({
+        url: "scripts/ajax.handler.php",
+        method: "POST",
+        data: {diceValue: diceValue.toString()},
+        dataType: "text",
+        success: function () {
+            console.log("gelukt");
+        },
+        error: function (error) {
+            console.error("nee", error);
+        }
+    });
+    checkEndGame(tileButtons, diceValue, currentPlayer)
+};
 
 // check if game should be ended
 function checkEndGame(tileButtons, diceValue, currentPlayer) {
@@ -28,38 +49,22 @@ function checkEndGame(tileButtons, diceValue, currentPlayer) {
         window.location.href = "http://localhost:8888/WP23/WP_fp2/endpage.php";
         return;
     }
-}
+};
 
 
 
 
 $(document).ready(function() {
     let rollButton = $("#rollButton");
-    //let diceResult = $("#diceResult");
+    var tileButtons = $(".player-board button");
     let diceValue;
+    let diceResult = $("#diceResult");
 
-    function rollDice() {
-        diceValue = Math.floor(Math.random() * 11) + 2;
-        diceResult.text("Dice result: " + diceValue);
+    // Generates boards with tiles/buttons
+    generatePlayerBoard(player1Board, "Player 1", player1Tiles);
+    generatePlayerBoard(player2Board, "Player 2", player2Tiles);
 
-        console.log("diceValue:", diceValue);
-
-        $.ajax({
-            url: "scripts/ajax.handler.php",
-            method: "POST",
-            data: {diceValue: diceValue.toString()},
-            dataType: "text",
-            success: function () {
-                console.log("gelukt");
-            },
-            error: function (error) {
-                console.error("nee", error);
-            }
-        });
-        checkEndGame(tileButtons, diceValue, currentPlayer)
-    }
-
-    rollButton.on("click", rollDice);
+    rollButton.on("click", rollDice(tileButtons, currentPlayer));
     var player1Board = $("#player1");
     var player2Board = $("#player2");
 
@@ -69,16 +74,11 @@ $(document).ready(function() {
 
 
 
-    // Generates boards with tiles/buttons
-    generatePlayerBoard(player1Board, "Player 1", player1Tiles);
-    generatePlayerBoard(player2Board, "Player 2", player2Tiles);
 
-    var diceResult = $("#diceResult");
+
     var messageText = $("#messageText");
 
     var currentPlayer = "Player 1";
-
-    var tileButtons = $(".player-board button");
 
     // Add event listeners to tile buttons
     tileButtons.on("click", function () {
