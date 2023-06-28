@@ -12,7 +12,7 @@ function checkEndGame(tileButtons, diceValue, currentPlayer) {
         return acc + curr;
     }, 0);
     if(sum < diceValue) {
-        window.location.href = "http://localhost:8888/WP23/WP_fp/endpage.php";
+        window.location.href = "http://localhost:8888/WP23/WP_fp2/endpage.php";
         return;
     }
 }
