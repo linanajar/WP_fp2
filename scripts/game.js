@@ -1,23 +1,23 @@
-function checkEndGame(tileButtons, diceValue, currentPlayer) {
-    // Check if sum of open tiles is less than dice value
-    openTiles = [];
-    tileButtons.each(function () {
-        var player = $(this).attr("data-player");
-        var tile = parseInt($(this).attr("data-tile"));
-        if (player === currentPlayer && !($(this).hasClass("selected"))) {
-            openTiles.push(tile);
-        }})
-    // Check if open tiles sum up to more than dice value
-    var sum = openTiles.reduce(function (acc, curr) {
-        return acc + curr;
-    }, 0);
-    if(sum < diceValue) {
-        window.location.href = "http://localhost:8888/WP23/WP_fp2/endpage.php";
-        return;
-    }
-}
-
 $(document).ready(function() {
+    function checkEndGame(tileButtons, diceValue, currentPlayer) {
+        // Check if sum of open tiles is less than dice value
+        openTiles = [];
+        tileButtons.each(function () {
+            var player = $(this).attr("data-player");
+            var tile = parseInt($(this).attr("data-tile"));
+            if (player === currentPlayer && !($(this).hasClass("selected"))) {
+                openTiles.push(tile);
+            }})
+        // Check if open tiles sum up to more than dice value
+        var sum = openTiles.reduce(function (acc, curr) {
+            return acc + curr;
+        }, 0);
+        if(sum < diceValue) {
+            window.location.href = "http://localhost:8888/WP23/WP_fp2/endpage.php";
+            return;
+        }
+    }
+
     let rollButton = $("#rollButton");
     //let diceResult = $("#diceResult");
     let diceValue;
