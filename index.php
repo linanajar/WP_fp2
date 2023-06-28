@@ -28,7 +28,7 @@ include 'tpl/head.php';?>
         <form id="usernameForm">
             <label for="username">Enter your username:</label>
             <input type="text" id="username" required>
-            <button type="submit" id="generateLinkButton">Generate Link</button>
+            <button type="button" id="generateLinkButton">Generate Link</button>
         </form>
         <div id="gameLink" class="text-center mt-4">
             <p>Share this link with a friend to play together:</p>

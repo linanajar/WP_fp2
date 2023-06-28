@@ -2,33 +2,36 @@ $(document).ready(function() {
     var generateLinkButton = $("#generateLinkButton");
     var startGameButton = $("#startGameButton");
     var copyButton = $("#copyButton");
-    var queryParams = new URLSearchParams(window.location.search);
-    var username = queryParams.get("username");
+    var usernameInput = $("#username");
+    var linkInput = $("#linkInput");
+    var username = usernameInput.val();
 
-    if (username) {
-        // If username is provided in the query, display game link with username
+    // Define function to generate link
+    function  generateLink(){
+        username = usernameInput.val();
         var gameURL = window.location.origin + "/WP23/WP_fp2/gamepage.php?username=" + encodeURIComponent(username);
         linkInput.val(gameURL);
     }
 
-    generateLinkButton.on("click", function(event) {
-        event.preventDefault();
-        username = $("#username").val();
-        var gameURL = window.location.origin + "/WP23/WP_fp2/gamepage.php?username=" + encodeURIComponent(username);
-        linkInput.val(gameURL);
-    });
-
-    startGameButton.on("click", function(event) {
-        event.preventDefault();
-        username = $("#username").val();
+    // Define function to start game
+    function startGame() {
+        username = usernameInput.val();
         var gameURL = window.location.origin + "/WP23/WP_fp2/gamepage.php?username=" + encodeURIComponent(username);
         window.open(gameURL, "_blank");
-    });
+    }
 
-    copyButton.on("click", function() {
+    // Define function to copy url
+    function copyURL() {
         // Copy the game URL to the clipboard
         linkInput.select();
         document.execCommand("copy");
         window.alert("Game URL copied to clipboard!");
-    });
+    }
+
+    if (username !== null) {
+        // If username is provided in the query, make the buttons work
+        generateLinkButton.on("click", generateLink);
+        startGameButton.on("click", startGame);
+        copyButton.on("click", copyURL);
+    }
 });
