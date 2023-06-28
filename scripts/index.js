@@ -7,13 +7,12 @@ $(document).ready(function() {
 
 
     // Define function to generate link
-    function  generateLink(usernameInput){
+    function generateLink(usernameInput) {
         let username = usernameInput.val();
         if (username !== '') {
             let gameURL = window.location.origin + "/WP23/WP_fp2/gamepage.php?username=" + encodeURIComponent(username)
             linkInput.val(gameURL);
-        }
-        else {
+        } else {
 
         }
     }
@@ -32,10 +31,9 @@ $(document).ready(function() {
     }
 
     // If username is provided in the query, make the buttons work
-        generateLinkButton.on("click", function() {
-            generateLink(usernameInput)
-        });
-        startGameButton.on("click", startGame);
-        copyButton.on("click", copyURL);
-
-});
+    generateLinkButton.on("click", function () {
+        generateLink(usernameInput)
+    });
+    startGameButton.on("click", startGame);
+    copyButton.on("click", copyURL);
+})
