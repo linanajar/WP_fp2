@@ -33,7 +33,6 @@ include 'tpl/head.php';?>
         <div id="gameLink" class="text-center mt-4">
             <p>Share this link with a friend to play together:</p>
             <div class="input-group">
-                <!--                <label for="linkInput">Game URL:</label>-->
                 <input type="text" id="linkInput" class="form-control" readonly aria-label="Game URL">
                 <div class="input-group-append">
                     <button id="copyButton" class="btn btn-secondary" type="button">Copy</button>

@@ -1,6 +1,4 @@
 $(document).ready(function() {
-    var usernameForm = $("#usernameForm");
-    var gameLink = $("#gameLink");
     var generateLinkButton = $("#generateLinkButton");
     var startGameButton = $("#startGameButton");
     var copyButton = $("#copyButton");
