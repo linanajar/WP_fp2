@@ -21,15 +21,22 @@ $(document).ready(function() {
                 console.error("nee", error);
             }
         });
-        // Check if sum of open tiles is more than dice value
+        // Check if sum of open tiles is less than dice value
         openTiles = [];
         tileButtons.each(function () {
             var player = $(this).attr("data-player");
             var tile = parseInt($(this).attr("data-tile"));
             if (player === currentPlayer && !($(this).hasClass("selected"))) {
                 openTiles.push(tile);
-                console.log(openTiles);
             }})
+        // Check if open tiles sum up to more than dice value
+        var sum = openTiles.reduce(function (acc, curr) {
+            return acc + curr;
+        }, 0);
+        if(sum < diceValue) {
+            window.location.href = "http://localhost:8888/WP23/WP_fp/endpage.php";
+            return;
+        }
     }
 
     rollButton.on("click", rollDice);
