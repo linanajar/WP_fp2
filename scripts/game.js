@@ -8,7 +8,7 @@ function generatePlayerBoard(board, playerName, playerTiles) {
         board.append(button);
         playerTiles.push(i); // Assign the tile to the respective player's array
     }
-};
+}
 
 function rollDice() {
     var tileButtons = $(".player-board button");
@@ -17,6 +17,8 @@ function rollDice() {
     diceValue = Math.floor(Math.random() * 11) + 2;
     diceResult.text("Dice result: " + diceValue);
     console.log("diceValue:", diceValue);
+
+    // Post diceValue to gameState.json to retrieve later
     $.ajax({
         url: "scripts/ajax.handler.php",
         method: "POST",
@@ -31,7 +33,23 @@ function rollDice() {
     });
     checkEndGame(tileButtons, diceValue, currentPlayer)
     toggleButtons();
-};
+}
+
+// Get diceValue from gameState.json
+function updateGameState() {
+    $.ajax({
+        url: "scripts/update_game_state.php",
+        method: "GET",
+        dataType: "json",
+        success: function(response) {
+            diceResult.text("Dice result: " + response.diceValue);
+            console.log("wel gelukt");
+        },
+        error: function(error) {
+            console.error("niet gelukt", error);
+        }
+    });
+}
 
 //toggle visibility of roll and hide button
 function toggleButtons() {
@@ -57,13 +75,16 @@ function checkEndGame(tileButtons, diceValue, currentPlayer) {
         window.location.href = "http://localhost:8888/WP23/WP_fp2/endpage.php";
         return;
     }
-};
+}
 
 
 $(document).ready(function() {
     // when the button to roll is clicked, roll the dice
     let rollButton = $("#rollButton");
     rollButton.on("click", rollDice);
+    function updateGame(gameState) {
+    }
+    setInterval(updateGameState, 2000)
     let diceValue;
     var player1Board = $("#player1");
     var player2Board = $("#player2");
@@ -114,20 +135,6 @@ $(document).ready(function() {
             diceValue: diceValue
         };
 
-        $.ajax({
-            url: "scripts/ajax.handler.php",
-            method: "POST",
-            data: requestData,
-            success: function (response) {
-                // Handle the response from the server
-                //console.log(requestData);
-                // ...
-            },
-            error: function (error) {
-                console.error("Error updating game state:", error);
-                // ...
-            }
-        });
 
         // Check if selected tiles sum up to dice value
         var sum = selectedTiles.reduce(function (acc, curr) {
