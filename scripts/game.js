@@ -100,7 +100,9 @@ $(document).ready(function() {
     let rollButton = $("#rollButton");
     var submitButton = $("#submit-choice");
     var tileButtons = $(".player-board button");
-    rollButton.on("click", rollDice(rollButton, submitButton, tileButtons, currentPlayer));
+    rollButton.on("click", function() {
+        rollDice(rollButton, submitButton, tileButtons, currentPlayer)
+    });
     // retrieve diceValue and currentPlayer
     updateGameState();
     // setInterval(updateGameState, 2000)
@@ -117,10 +119,9 @@ $(document).ready(function() {
     });
 
 
-    var messageText = $("#messageText");
-
 
     submitButton.on("click", function () {
+        // change who is logged as current player
         var currentPlayerTiles = currentPlayer === "Player 1" ? player1Tiles : player2Tiles;
 
         // Find selected tiles
