@@ -68,10 +68,7 @@ function updateGameState() {
 }
 
 
-function rollDice() {
-    // used to be player-board button but it gave an error
-    let tileButtons = $(".tileButtons");
-    let currentPlayer = "Player 1";
+function rollDice(rollButton, submitButton, tileButtons, currentPlayer) {
     let diceResult = $("#diceResult");
     let diceValue = Math.floor(Math.random() * 11) + 2;
     diceResult.text("Dice result: " + diceValue);
@@ -96,43 +93,40 @@ function rollDice() {
         }
     });
     checkEndGame(tileButtons, diceValue, currentPlayer)
-    toggleButtons();
-}
-
+    toggleButtons(rollButton, submitButton);
+};
 
 //toggle visibility of roll and hide button
-function toggleButtons() {
-    $("#rollButton").toggle();
-    $("#submit-choice").toggle();
+function toggleButtons(rollButton, submitButton) {
+    rollButton.toggle();
+    submitButton.toggle();
 }
 
 // check if game should be ended
 function checkEndGame(tileButtons, diceValue, currentPlayer) {
     // Check if sum of open tiles is less than dice value
-    let openTiles = [];
+    openTiles = [];
     tileButtons.each(function () {
         let player = $(this).attr("data-player");
         let tile = parseInt($(this).attr("data-tile"));
-        if (player === currentPlayer && !($(this).hasClass("selected"))) {
+        if (player === currentPlayer && !($(this).hasClass("closed"))) {
             openTiles.push(tile);
         }})
     // Check if open tiles sum up to more than dice value
     let sum = openTiles.reduce(function (acc, curr) {
         return acc + curr;
     }, 0);
-    // Commented because it redirects to the endpage immediately after rolling the dice
-    // if(sum < diceValue) {
-    //     window.location.href = "http://localhost:8888/WP23/WP_fp2/endpage.php";
-    // }
-}
+    if(sum < diceValue) {
+        window.location.href = "http://localhost:8888/WP23/WP_fp2/endpage.php";
+    }
+};
+
 
 
 $(document).ready(function() {
-    // when the button to roll is clicked, roll the dice
-    let rollButton = $("#rollButton");
-    rollButton.on("click", rollDice);
-
-
+    // generate player boards
+    let diceValue;
+    let currentPlayer = "Player 1";
     let player1Board = $("#player1");
     let player2Board = $("#player2");
     // Arrays to hold the player tiles
@@ -143,13 +137,18 @@ $(document).ready(function() {
     generatePlayerBoard(player1Board, "Player 1", player1Tiles);
     generatePlayerBoard(player2Board, "Player 2", player2Tiles);
 
+    // when the button to roll is clicked, roll the dice
+    let rollButton = $("#rollButton");
+    let submitButton = $("#submit-choice");
+    let tileButtons = $(".player-board button");
+    rollButton.on("click", rollDice(rollButton, submitButton, tileButtons, currentPlayer));
 
-    let messageText = $("#messageText");
 
 
 
     // Add event listeners to tile buttons
     tileButtons.on("click", function () {
+        // Add event listeners to tile buttons
         let player = $(this).attr("data-player");
         let tile = parseInt($(this).attr("data-tile"));
 
@@ -161,6 +160,9 @@ $(document).ready(function() {
 
 
     let submitButton = $("#submit-choice");
+    let messageText = $("#messageText");
+
+
     submitButton.on("click", function () {
         let currentPlayerTiles = currentPlayer === "Player 1" ? player1Tiles : player2Tiles;
 
@@ -199,6 +201,8 @@ $(document).ready(function() {
                 });
             });
         }
+        // toggle buttons
+        toggleButtons(rollButton, submitButton);
 
         // Switch to next player
         currentPlayer = currentPlayer === "Player 1" ? "Player 2" : "Player 1";
