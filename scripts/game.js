@@ -10,8 +10,7 @@ function generatePlayerBoard(board, playerName, playerTiles) {
     }
 }
 
-function rollDice(rollButton, submitButton, tileButtons) {
-    var currentPlayer = "Player 1";
+function rollDice(rollButton, submitButton, tileButtons, currentPlayer) {
     let diceResult = $("#diceResult");
     diceValue = Math.floor(Math.random() * 11) + 2;
     diceResult.text("Dice result: " + diceValue);
@@ -86,6 +85,7 @@ function updateGameState() {
 $(document).ready(function() {
     // generate player boards
     let diceValue;
+    var currentPlayer = "Player 1";
     var player1Board = $("#player1");
     var player2Board = $("#player2");
     // Arrays to hold the player tiles
@@ -100,7 +100,7 @@ $(document).ready(function() {
     let rollButton = $("#rollButton");
     var submitButton = $("#submit-choice");
     var tileButtons = $(".player-board button");
-    rollButton.on("click", rollDice(rollButton, submitButton, tileButtons));
+    rollButton.on("click", rollDice(rollButton, submitButton, tileButtons, currentPlayer));
     // retrieve diceValue and currentPlayer
     updateGameState();
     // setInterval(updateGameState, 2000)
