@@ -17,6 +17,4 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     } else {
         echo 'values are missing';
     }
-} else {
-    echo 'NOpe';
 }

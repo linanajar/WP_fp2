@@ -6,20 +6,20 @@ function updateGameState() {
         // Extract diceValue and currentPlayer from gameState
         let diceValue = gameState.diceValue;
         let currentPlayer = gameState.currentPlayer;
+        let board = gameState.board;
+        let playerName = gameState.playerName;
 
         // Display the data on the page
         $("#diceValue").text("Dice result: " + diceValue);
+        
 
 
         // Check if it works
         console.log("diceValue:", diceValue);
         console.log("currentPlayer:", currentPlayer);
+        console.log("board:", board);
+        console.log("playerName:", playerName);
         console.log("wel gelukt");
-
-        // // Get playerboards/tiles data from gameState.json
-        // // Werkt nog niet
-        // let player1Board = $("#player1");
-        // let player2Board = $("#player2");
 
 
 
@@ -42,24 +42,26 @@ function generatePlayerBoard(board, playerName, playerTiles) {
         board.append(button);
         playerTiles.push(i); // Assign the tile to the respective player's array
     }
-    // $.ajax({
-    //     url: "scripts/get_player_tiles.php",
-    //     method: "POST",
-    //     data: {
-    //         board: board,
-    //         playerName: playerName,
-    //     },
-    //     dataType: "html",  // WEET niet zeker!
-    //     success: function () {
-    //         console.log("gelukt");
-    //         // Get the current gameState
-    //         updateGameState();
-    //     },
-    //     error: function (error) {
-    //         console.error("nee", error);
-    //     }
-    // })
+}
 
+function postGameboard(board, playerName) {
+     $.ajax({
+         url: "scripts/get_player_tiles.php",
+         method: "POST",
+         data: {
+             board: board,
+             playerName: playerName,
+         },
+         dataType: "text",
+         success: function () {
+             console.log("versturen gelukt");
+             // Get the current gameState
+             updateGameState();
+         },
+         error: function (error) {
+             console.error("nee", error);
+         }
+     })
 }
 
 function rollDice(rollButton, player1Tiles, player2Tiles) {
@@ -83,7 +85,7 @@ function rollDice(rollButton, player1Tiles, player2Tiles) {
             currentPlayer: currentPlayer},
         dataType: "text",
         success: function () {
-            console.log("gelukt");
+            /*console.log("gelukt");*/
             // Get the current diceValue and player
             updateGameState();
         },
@@ -144,6 +146,8 @@ function submit(player1Tiles, player2Tiles, tileButtons, currentPlayer1, diceVal
     if (sumSelect === diceValue) {
         // close selected tiles
         closeTiles(selectedTiles, currentPlayerTiles, tileButtons, currentPlayer1)
+        // post game-board to gameState.json
+        postGameboard(currentPlayerTiles, currentPlayer1)
         // update who the current player
         updatePlayer(currentPlayer1)
         // toggle buttons
@@ -232,7 +236,7 @@ $(document).ready(function() {
         rollDice(rollButton, player1Tiles, player2Tiles)
     });
 
-    setInterval(updateGameState, 3000);
+   /* setInterval(updateGameState, 500);*/
 });
 
 
