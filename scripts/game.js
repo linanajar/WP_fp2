@@ -28,6 +28,9 @@ function updateGameState() {
         });
 }
 
+/**
+ * get information over what board updated and process it
+ */
 function updateBoardState() {
     $.getJSON("data/boardState.json", function(boardState) {
         console.log("Updated boardState:", boardState);
@@ -35,9 +38,9 @@ function updateBoardState() {
         // Extract diceValue and currentPlayer from gameState
         let board = boardState.board;
         let playerName = boardState.playerName;
-
-        // Display the data on the page
+        // add a function to keep track of which tile is closed
         let tileNumber = 1
+        // check each tile in the board array
         board.forEach(function (tile) {
             if (tile === '-1') {
                 $(".player-board button").each(function () {
@@ -49,7 +52,9 @@ function updateBoardState() {
                     }
                 });
             }
+            // make sure the next tile's index is one higher
             tileNumber += 1
+            // make sure to start counting again if count is over 9
             if (tileNumber === 10){
                 i = 0
             }
@@ -86,6 +91,11 @@ function generatePlayerBoard(board, playerName, playerTiles) {
     }
 }
 
+/**
+ * post updated information of the game to the JSON file
+ * @param board, array of the board with -1 in the place of tiles that are closed
+ * @param playerName, string of the player who the board belongs to
+ */
 function postGameboard(board, playerName) {
      $.ajax({
          url: "scripts/get_player_tiles.php",
@@ -135,6 +145,11 @@ function rollDice(rollButton, player1Tiles, player2Tiles) {
     });
 }
 
+/**
+ * add latest diceValue and currentPlayer to json file
+ * @param diceValue, value of the dice when it was last rolled
+ * @param currentPlayer, current player (string)
+ */
 function postGameState(diceValue, currentPlayer){
     $.ajax({
         url: "scripts/add_dicevalue_currentplayer.php",
@@ -222,7 +237,7 @@ function submit(player1Tiles, player2Tiles, tileButtons, currentPlayer1, diceVal
         // update who the current player
         updatePlayer(currentPlayer1)
         // post game-board to gameState.json
-        postGameboard(currentPlayerTiles, window.currentPlayer)
+        postGameboard(currentPlayerTiles, currentPlayer1)
         // Post diceValue and currentPlayer to gameState.json to retrieve later
         postGameState(diceValue, currentPlayer1)
         // toggle buttons
