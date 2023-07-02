@@ -98,7 +98,7 @@ function rollDice(rollButton, player1Tiles, player2Tiles) {
     checkEndGame(tileButtons, diceValue, currentPlayer)
     toggleButtons(rollButton, submitButton);
     allowSelection(currentPlayer, tileButtons);
-    submitButton.on("click", function () {
+    submitButton.off().on("click", function () {
         submit(player1Tiles, player2Tiles, tileButtons, currentPlayer, diceValue, rollButton, submitButton)
     });
 };
