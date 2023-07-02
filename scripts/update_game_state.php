@@ -14,8 +14,8 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
         $gameState['diceValue'] = $diceValue;
         $gameState['currentPlayer'] = $currentPlayer;
 
-        $jsonData = json_encode($gameState);
-        file_put_contents('../data/gameState.json', $jsonData);
+        // $jsonData = json_encode($gameState);
+        // file_put_contents('../data/gameState.json', $jsonData);
 
 
         // Send the updated game state as the response
