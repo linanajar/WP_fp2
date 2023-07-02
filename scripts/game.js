@@ -9,7 +9,6 @@ function updateGameState() {
 
         // Display the data on the page
         $("#diceValue").text("Dice result: " + diceValue);
-        $("#currentPlayer").text("Current Player: " + currentPlayer);
 
 
         // Check if it works
@@ -19,10 +18,8 @@ function updateGameState() {
 
         // // Get playerboards/tiles data from gameState.json
         // // Werkt nog niet
-        let player1Board = $("#player1");
-        let player2Board = $("#player2");
-
-
+        /* let player1Board = $("#player1");
+        let player2Board = $("#player2"); */
 
     })
         .fail(function(xhr, status, error) {
@@ -73,7 +70,6 @@ function rollDice(rollButton, player1Tiles, player2Tiles) {
     let diceValue = Math.floor(Math.random() * 11) + 2;
     // show result
     diceResult.text("Dice result: " + diceValue);
-    console.log("diceValue:", diceValue);
 
     // Posts diceValue and currentPlayer to gameState.json to retrieve later
     $.ajax({
@@ -140,7 +136,6 @@ function submit(player1Tiles, player2Tiles, tileButtons, currentPlayer1, diceVal
             $(this).removeClass("selected");
         }
     });
-    console.log(selectedTiles)
 
 
     // Check if selected tiles sum up to dice value
@@ -213,5 +208,3 @@ $(document).ready(function() {
 
     setInterval(updateGameState, 3000);
 });
-
-
