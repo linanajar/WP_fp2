@@ -11,7 +11,6 @@ function updateGameState() {
 
         // Display the data on the page
         $("#diceValue").text("Dice result: " + diceValue);
-        $("#currentPlayer").text("Current Player: " + currentPlayer);
 
 
         // Check if it works
@@ -21,8 +20,8 @@ function updateGameState() {
 
         // // Get playerboards/tiles data from gameState.json
         // // Werkt nog niet
-        let player1Board = $("#player1");
-        let player2Board = $("#player2");
+        // let player1Board = $("#player1");
+        // let player2Board = $("#player2");
 
 
 
