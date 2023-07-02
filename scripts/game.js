@@ -69,11 +69,14 @@ function updateGameState() {
 
 
 function rollDice(rollButton, player1Tiles, player2Tiles) {
+    // define important variables
     let submitButton = $("#submit-choice");
     let tileButtons = $(".player-board button");
     let currentPlayer = window.currentPlayer
     let diceResult = $("#diceResult");
+    // roll dice
     let diceValue = Math.floor(Math.random() * 11) + 2;
+    // show result
     diceResult.text("Dice result: " + diceValue);
     console.log("diceValue:", diceValue);
 
@@ -137,7 +140,7 @@ function submit(player1Tiles, player2Tiles, tileButtons, currentPlayer1, diceVal
     tileButtons.each(function () {
         let player = $(this).attr("data-player");
         let tile = parseInt($(this).attr("data-tile"));
-
+        // add tiles selected by current player that were not closed to array
         if (player === currentPlayer1 && tile !== -1 && $(this).hasClass("selected")) {
             selectedTiles.push(tile);
             $(this).removeClass("selected");
@@ -171,10 +174,12 @@ function submit(player1Tiles, player2Tiles, tileButtons, currentPlayer1, diceVal
         window.currentPlayer = currentPlayer1
         // toggle buttons
         toggleButtons(rollButton, submitButton);
+        // show message about whose turn it is
         let messageText = $("#messageText");
         messageText.text(currentPlayer + "'s turn. Select tiles and roll again.");
     } else {
-        window.alert("Selected tiles do not match dice value and/or player. Please try again.")
+        // Show error message
+        window.alert("Selected tiles do not match dice value. Please try again.")
     }
 }
 
@@ -184,7 +189,7 @@ function allowSelection (currentPlayer, tileButtons) {
         // Add event listeners to tile buttons
         let player = $(this).attr("data-player");
         let tile = parseInt($(this).attr("data-tile"));
-
+        // check if current player clicked an unclosed tile
         if (player === currentPlayer && tile !== -1) {
             // Toggle the selection of the tile
             $(this).toggleClass("selected");
@@ -210,7 +215,7 @@ $(document).ready(function() {
     // when the button to roll is clicked, roll the dice
     let rollButton = $("#rollButton");
     rollButton.on("click", function () {
-        rollDice(rollButton, currentPlayer, player1Tiles, player2Tiles)
+        rollDice(rollButton, player1Tiles, player2Tiles)
     });
 
     setInterval(updateGameState, 3000);
