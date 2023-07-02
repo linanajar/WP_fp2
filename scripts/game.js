@@ -45,16 +45,16 @@ function updateGameState() {
         console.log("Updated gameState:", gameState);
 
         // Extract diceValue and currentPlayer from gameState
-        var diceValue = gameState.diceValue;
+        var diceValue1 = gameState.diceValue;
         var currentPlayer = gameState.currentPlayer;
 
         // Display the data on the page
-        $("#diceValue").text("Dice result: " + diceValue);
+        $("#diceValue").text("Dice result: " + diceValue1);
         $("#currentPlayer").text("Current Player: " + currentPlayer);
 
 
         // Check if it works
-        console.log("diceValue:", diceValue);
+        console.log("diceValue:", diceValue1);
         console.log("currentPlayer:", currentPlayer);
 
         console.log("wel gelukt");
@@ -68,8 +68,10 @@ function updateGameState() {
 }
 
 
-function rollDice(rollButton, submitButton, tileButtons, player1Tiles, player2Tiles) {
-    var currentPlayer = window.currentPlayer
+function rollDice(rollButton, player1Tiles, player2Tiles) {
+    let submitButton = $("#submit-choice");
+    let tileButtons = $(".player-board button");
+    let currentPlayer = window.currentPlayer
     let diceResult = $("#diceResult");
     let diceValue = Math.floor(Math.random() * 11) + 2;
     diceResult.text("Dice result: " + diceValue);
@@ -97,10 +99,7 @@ function rollDice(rollButton, submitButton, tileButtons, player1Tiles, player2Ti
     toggleButtons(rollButton, submitButton);
     allowSelection(currentPlayer, tileButtons);
     submitButton.on("click", function () {
-        submit(player1Tiles, player2Tiles, tileButtons, currentPlayer, diceValue)
-        // toggle buttons
-        toggleButtons(rollButton, submitButton);
-        // Switch to next player
+        submit(player1Tiles, player2Tiles, tileButtons, currentPlayer, diceValue, rollButton, submitButton)
     });
 };
 
@@ -129,7 +128,7 @@ function checkEndGame(tileButtons, diceValue, currentPlayer) {
     }
 };
 
-function submit(player1Tiles, player2Tiles, tileButtons, currentPlayer1, diceValue) {
+function submit(player1Tiles, player2Tiles, tileButtons, currentPlayer1, diceValue, rollButton, submitButton) {
     // find tiles attached to current player
     let currentPlayerTiles = currentPlayer1 === "Player 1" ? player1Tiles : player2Tiles;
 
@@ -167,8 +166,11 @@ function submit(player1Tiles, player2Tiles, tileButtons, currentPlayer1, diceVal
                 }
             });
         });
+        // update who the current player is
         currentPlayer1 = currentPlayer1 === "Player 1" ? "Player 2" : "Player 1";
         window.currentPlayer = currentPlayer1
+        // toggle buttons
+        toggleButtons(rollButton, submitButton);
         let messageText = $("#messageText");
         messageText.text(currentPlayer + "'s turn. Select tiles and roll again.");
     } else {
@@ -178,7 +180,7 @@ function submit(player1Tiles, player2Tiles, tileButtons, currentPlayer1, diceVal
 
 function allowSelection (currentPlayer, tileButtons) {
     // Add event listeners to tile buttons
-    tileButtons.on("click", function () {
+    tileButtons.off('click').on("click", function () {
         // Add event listeners to tile buttons
         let player = $(this).attr("data-player");
         let tile = parseInt($(this).attr("data-tile"));
@@ -207,10 +209,8 @@ $(document).ready(function() {
 
     // when the button to roll is clicked, roll the dice
     let rollButton = $("#rollButton");
-    let submitButton = $("#submit-choice");
-    let tileButtons = $(".player-board button");
     rollButton.on("click", function () {
-        rollDice(rollButton, submitButton, tileButtons, currentPlayer, player1Tiles, player2Tiles)
+        rollDice(rollButton, currentPlayer, player1Tiles, player2Tiles)
     });
 
     setInterval(updateGameState, 3000);
