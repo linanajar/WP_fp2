@@ -23,9 +23,6 @@ function updateGameState() {
         let player2Board = $("#player2");
 
 
-        generatePlayerBoard(player1Board, "Player 1", gameState);
-
-        generatePlayerBoard(player2Board, "Player 2", gameState);
 
     })
         .fail(function(xhr, status, error) {
@@ -46,23 +43,24 @@ function generatePlayerBoard(board, playerName, playerTiles) {
         board.append(button);
         playerTiles.push(i); // Assign the tile to the respective player's array
     }
-    $.ajax({
-        url: "scripts/get_player_tiles.php",
-        method: "POST",
-        data: {
-            board: board,
-            playerName: playerName,
-        },
-        dataType: "html",  // WEET niet zeker!
-        success: function () {
-            console.log("gelukt");
-            // Get the current gameState
-            updateGameState();
-        },
-        error: function (error) {
-            console.error("nee", error);
-        }
-    });
+    // $.ajax({
+    //     url: "scripts/get_player_tiles.php",
+    //     method: "POST",
+    //     data: {
+    //         board: board,
+    //         playerName: playerName,
+    //     },
+    //     dataType: "html",  // WEET niet zeker!
+    //     success: function () {
+    //         console.log("gelukt");
+    //         // Get the current gameState
+    //         updateGameState();
+    //     },
+    //     error: function (error) {
+    //         console.error("nee", error);
+    //     }
+    // })
+
 }
 
 function rollDice(rollButton, player1Tiles, player2Tiles) {
