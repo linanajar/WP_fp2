@@ -41,6 +41,8 @@ include 'tpl/head.php';?>
         <p id="messageText"></p>
         <p id="diceValue"></p>
         <p id="currentPlayer"></p>
+        <p id="board"></p>
+        <p id="playerName"></p>
     </div>
 </div>
 
