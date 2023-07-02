@@ -99,9 +99,6 @@ function rollDice(rollButton, submitButton, tileButtons, currentPlayer, player1T
         // toggle buttons
         toggleButtons(rollButton, submitButton);
         // Switch to next player
-        currentPlayer = currentPlayer === "Player 1" ? "Player 2" : "Player 1";
-        let messageText = $("#messageText");
-        messageText.text(currentPlayer + "'s turn. Select tiles and roll again.");
     });
 };
 
@@ -168,6 +165,9 @@ function submit(player1Tiles, player2Tiles, tileButtons, currentPlayer, diceValu
                 }
             });
         });
+        currentPlayer = currentPlayer === "Player 1" ? "Player 2" : "Player 1";
+        let messageText = $("#messageText");
+        messageText.text(currentPlayer + "'s turn. Select tiles and roll again.");
     } else {
         window.alert("Selected tiles do not match dice value and/or player. Please try again.")
     }
