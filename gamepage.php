@@ -36,8 +36,11 @@ include 'tpl/head.php';?>
         <p id="diceResult">Dice result: </p>
         <button id="rollButton">Roll</button>
     </div>
+    <input id="player" type="hidden" value="<?php if(isset($_GET['player'])){echo '$_GET[\'player\']';}?>">
     <div class="message">
         <p id="messageText"></p>
+        <p id="diceValue"></p>
+        <p id="currentPlayer"></p>
     </div>
 </div>
 
