@@ -10,9 +10,9 @@ $(document).ready(function() {
         let username = usernameInput.val();
         if (username !== '') {
             let gameURL = window.location.origin + "/WP23/WP_fp2/gamepage.php?username=" + encodeURIComponent(username)
-            linkInput.val(gameURL);
+            linkInput.val(gameURL + "&player=Player 2");
             startGameButton.on("click", function() {
-                startGame(gameURL)
+                startGame(gameURL + "&player=Player 1")
             });
             copyButton.on("click", copyURL)
         } else {
