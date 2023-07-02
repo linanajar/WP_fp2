@@ -33,7 +33,7 @@ include 'tpl/head.php';?>
         <button id="submit-choice">Submit</button>
     </div>
     <div class="dice">
-        <p id="diceResult">Dice result: </p>
+        <p id="diceValue">Dice result: </p>
         <button id="rollButton">Roll</button>
     </div>
     <input id="player" type="hidden" value="<?php if(isset($_GET['player'])){echo '$_GET[\'player\']';}?>">

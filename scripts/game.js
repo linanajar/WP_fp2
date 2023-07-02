@@ -9,7 +9,6 @@ function generatePlayerBoard(board, playerName, playerTiles) {
         playerTiles.push(i); // Assign the tile to the respective player's array
     }
 }
-
 // Old code, doesn't work
 // Get diceValue from gameState.json
 // function updateGameState() {
@@ -70,8 +69,9 @@ function updateGameState() {
 
 
 function rollDice(rollButton, submitButton, tileButtons, currentPlayer) {
+    let diceResult = $("#diceResult");
     let diceValue = Math.floor(Math.random() * 11) + 2;
-    $("#diceValue").text("Dice result: " + diceValue);
+    diceResult.text("Dice result: " + diceValue);
     console.log("diceValue:", diceValue);
 
     // Posts diceValue and currentPlayer to gameState.json to retrieve later
@@ -165,6 +165,7 @@ function submit() {
 
 $(document).ready(function() {
     // generate player boards
+    let diceValue;
     let currentPlayer = "Player 1";
     let player1Board = $("#player1");
     let player2Board = $("#player2");
