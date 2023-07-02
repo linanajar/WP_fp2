@@ -3,29 +3,14 @@
  */
 function updateGameState() {
     $.getJSON("data/gameState.json", function(gameState) {
-        console.log("Updated gameState:", gameState);
-
         // Extract diceValue and currentPlayer from gameState
         let diceValue = gameState.diceValue;
         let currentPlayer = gameState.currentPlayer;
 
-
         // Display the data on the page
         $("#diceValue").text("Dice result: " + diceValue);
 
-
-        // Check if it works
-        console.log("diceValue:", diceValue);
-        console.log("currentPlayer:", currentPlayer);
-        console.log("wel gelukt");
-
     })
-        .fail(function(xhr, status, error) {
-            console.error("niet gelukt", error);
-            console.error("Error details: " + error);
-            console.error("AJAX request failed with status: " + status);
-            console.error("Error details: " + JSON.stringify(xhr));
-        });
 }
 
 /**
@@ -33,8 +18,6 @@ function updateGameState() {
  */
 function updateBoardState() {
     $.getJSON("data/boardState.json", function(boardState) {
-        console.log("Updated boardState:", boardState);
-
         // Extract diceValue and currentPlayer from gameState
         let board = boardState.board;
         let playerName = boardState.playerName;
@@ -59,20 +42,7 @@ function updateBoardState() {
                 i = 0
             }
         });
-
-
-        // Check if it works
-        console.log("board:", board);
-        console.log("playerName:", playerName);
-        console.log("ook gelukt");
-
     })
-        .fail(function(xhr, status, error) {
-            console.error("niet gelukt", error);
-            console.error("Error details: " + error);
-            console.error("AJAX request failed with status: " + status);
-            console.error("Error details: " + JSON.stringify(xhr));
-        });
 }
 /**
  * Function that generates a playerboard with numbered tiles that are buttons
@@ -97,23 +67,19 @@ function generatePlayerBoard(board, playerName, playerTiles) {
  * @param playerName, string of the player who the board belongs to
  */
 function postGameboard(board, playerName) {
-     $.ajax({
-         url: "scripts/get_player_tiles.php",
-         method: "POST",
-         data: {
-             board: board,
-             playerName: playerName,
-         },
-         dataType: "text",
-         success: function () {
-             console.log("versturen gelukt");
-             // Get the current gameState
-             updateGameState();
-         },
-         error: function (error) {
-             console.error("nee", error);
-         }
-     })
+    $.ajax({
+        url: "scripts/get_player_tiles.php",
+        method: "POST",
+        data: {
+            board: board,
+            playerName: playerName,
+        },
+        dataType: "text",
+        success: function () {
+            // Get the current gameState
+            updateGameState();
+        },
+    })
 }
 
 /**
@@ -133,7 +99,6 @@ function rollDice(rollButton, player1Tiles, player2Tiles) {
     let diceValue = Math.floor(Math.random() * 11) + 2;
     // show result
     diceResult.text("Dice result: " + diceValue);
-    console.log("diceValue:", diceValue);
 
     postGameState(diceValue, currentPlayer) // Posts diceValue and currentPlayer to gameState.json to retrieve later
 
@@ -159,13 +124,10 @@ function postGameState(diceValue, currentPlayer){
             currentPlayer: currentPlayer},
         dataType: "text",
         success: function () {
-            console.log("gelukt");
             // Get the current diceValue and player
             updateGameState();
         },
-        error: function (error) {
-            console.error("nee", error);
-        }
+
     });
 }
 
@@ -246,9 +208,9 @@ function submit(player1Tiles, player2Tiles, tileButtons, currentPlayer1, diceVal
         showTurnMessage(currentPlayer1)
     }
     else {
-    // Show error message
-    window.alert("Selected tiles do not match dice value. Please try again.")
-}
+        // Show error message
+        window.alert("Selected tiles do not match dice value. Please try again.")
+    }
 
 }
 
@@ -293,8 +255,8 @@ function closeTiles(selectedTiles, currentPlayerTiles, tileButtons, currentPlaye
  */
 function updatePlayer(currentPlayer1) {
     // update who the current player is
-        currentPlayer1 = currentPlayer1 === "Player 1" ? "Player 2" : "Player 1";
-        window.currentPlayer = currentPlayer1
+    currentPlayer1 = currentPlayer1 === "Player 1" ? "Player 2" : "Player 1";
+    window.currentPlayer = currentPlayer1
 }
 
 /**
@@ -351,5 +313,3 @@ $(document).ready(function() {
     setInterval(updateGameState, 500);
     setInterval(updateBoardState, 500);
 });
-
-
