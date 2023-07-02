@@ -9,37 +9,7 @@ function generatePlayerBoard(board, playerName, playerTiles) {
         playerTiles.push(i); // Assign the tile to the respective player's array
     }
 }
-// Old code, doesn't work
-// Get diceValue from gameState.json
-// function updateGameState() {
-//     $.ajax({
-//         url: "scripts/update_game_state.php",
-//         method: "GET",
-//         data: "data/gameState.json",
-//         dataType: "json",
-//         success: function(gameState) {
-//             console.log("Updated gameState:", gameState);
-//
-//             // Extract diceValue and currentPlayer from the response
-//             let diceValue = gameState.diceValue;
-//             let currentPlayer = gameState.currentPlayer;
-//
-//             // Check if it works
-//             console.log("diceValue:", diceValue);
-//             console.log("currentPlayer:", currentPlayer);
-//
-//             $("#diceValue").text("Dice result: " + diceValue);
-//             $("#currentPlayer").text("Current player: " + currentPlayer);
-//             console.log("wel gelukt");
-//         },
-//         error: function(xhr, status, error) {
-//             console.error("niet gelukt", error);
-//             console.error("Error details: " + error);
-//             console.error("AJAX request failed with status: " + status);
-//             console.error("Error details: " + JSON.stringify(xhr));
-//         }
-//     });
-// }
+
 function updateGameState() {
     $.getJSON("data/gameState.json", function(gameState) {
         console.log("Updated gameState:", gameState);
