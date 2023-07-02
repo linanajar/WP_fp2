@@ -1,4 +1,8 @@
 <?php
+//Not being used atm
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 if ($_SERVER["REQUEST_METHOD"] === "GET") {
     if (isset($_GET['diceValue']) && isset($_GET['currentPlayer'])) {
         $diceValue = $_GET['diceValue'];
@@ -18,7 +22,9 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
         header('Content-Type: application/json');
         echo $jsonData;
     } else {
-        echo 'geen dicevalue en currentplayer';
+//        header('Content-Type: application/json');
+        echo json_encode(array('error' => 'geen diceValue en currentPlayer'));
+
     }
 } else {
     echo 'nope';
