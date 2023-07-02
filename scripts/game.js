@@ -165,7 +165,6 @@ function submit() {
 
 $(document).ready(function() {
     // generate player boards
-    let diceValue;
     let currentPlayer = "Player 1";
     let player1Board = $("#player1");
     let player2Board = $("#player2");
