@@ -48,6 +48,6 @@ include 'tpl/head.php';?>
 </body>
 <?php
 include __DIR__ . '/scripts/add_dicevalue_currentplayer.php';
-include __DIR__ . '/scripts/update_game_state.php';
+include __DIR__ . '/scripts/get_player_tiles.php';
 include __DIR__ . '/tpl/footer.php';
 ?>
