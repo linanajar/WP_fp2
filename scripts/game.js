@@ -101,6 +101,7 @@ function rollDice(rollButton, submitButton, tileButtons, currentPlayer, player1T
 
         // Switch to next player
         currentPlayer = currentPlayer === "Player 1" ? "Player 2" : "Player 1";
+        let messageText = $("#messageText");
         messageText.text(currentPlayer + "'s turn. Select tiles and roll again.");
     });
 };
@@ -131,7 +132,7 @@ function checkEndGame(tileButtons, diceValue, currentPlayer) {
 };
 
 function submit(player1Tiles, player2Tiles, tileButtons, currentPlayer, diceValue) {
-    // change current player
+    // find tiles attached to current player
     let currentPlayerTiles = currentPlayer === "Player 1" ? player1Tiles : player2Tiles;
 
     // Find selected tiles
