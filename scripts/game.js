@@ -100,7 +100,7 @@ function rollDice(rollButton, player1Tiles, player2Tiles) {
     submitButton.off().on("click", function () {
         submit(player1Tiles, player2Tiles, tileButtons, currentPlayer, diceValue, rollButton, submitButton)
     });
-};
+}
 
 //toggle visibility of roll and hide button
 function toggleButtons(rollButton, submitButton) {
@@ -125,7 +125,7 @@ function checkEndGame(tileButtons, diceValue, currentPlayer) {
     if(sum < diceValue) {
         window.location.href = "http://localhost:8888/WP23/WP_fp2/endpage.php";
     }
-};
+}
 
 function submit(player1Tiles, player2Tiles, tileButtons, currentPlayer1, diceValue, rollButton, submitButton) {
     // find tiles attached to current player
