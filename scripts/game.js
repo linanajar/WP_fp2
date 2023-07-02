@@ -211,6 +211,7 @@ $(document).ready(function() {
         currentPlayer = currentPlayer === "Player 1" ? "Player 2" : "Player 1";
         messageText.text(currentPlayer + "'s turn. Select tiles and roll again.");
         });
+    setInterval(updateGameState,3000);
     });
 
 
