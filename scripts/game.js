@@ -43,7 +43,7 @@ function rollDice(rollButton, player1Tiles, player2Tiles) {
     let submitButton = $("#submit-choice");
     let tileButtons = $(".player-board button");
     let currentPlayer = window.currentPlayer
-    let diceResult = $("#diceResult");
+    var diceResult = $("#diceResult");
     // roll dice
     let diceValue = Math.floor(Math.random() * 11) + 2;
     // show result
@@ -92,11 +92,10 @@ function checkEndGame(tileButtons, diceValue, currentPlayer) {
         if (player === currentPlayer && !($(this).hasClass("closed"))) {
             openTiles.push(tile);
         }})
-    // Check if open tiles sum up to more than dice value
-    let sum = openTiles.reduce(function (acc, curr) {
-        return acc + curr;
-    }, 0);
-    if(sum < diceValue) {
+    // Check if open tiles sum up to less than dice value and end game if so
+    let sumOpen = calculateSum(openTiles)
+    if(sumOpen < diceValue) {
+        // Redirect to endpage
         window.location.href = "http://localhost:8888/WP23/WP_fp2/endpage.php";
     }
 };
@@ -116,15 +115,27 @@ function submit(player1Tiles, player2Tiles, tileButtons, currentPlayer1, diceVal
             $(this).removeClass("selected");
         }
     });
-    console.log(selectedTiles)
-
 
     // Check if selected tiles sum up to dice value
-    let sum = selectedTiles.reduce(function (acc, curr) {
+    sumSelect = calculateSum(selectedTiles)
+
+
+}
+
+/**
+ * A function that adds all values of an array consisting of numbers to each other
+ * @param Array, which consists solely of integers
+ * @returns integer, the values in the array added up
+ */
+function calculateSum(Array) {
+    let sum = Array.reduce(function (acc, curr) {
         return acc + curr;
     }, 0);
+    return sum;
+}
 
-    if (sum === diceValue) {
+function checkIfClose(diceValue, selectedTiles, sumSelect, currentPlayerTiles, tileButtons, currentPlayer1) {
+    if (sumSelect === diceValue) {
         // Close selected tiles
         selectedTiles.forEach(function (tile) {
             let index = currentPlayerTiles.indexOf(tile);
@@ -139,7 +150,7 @@ function submit(player1Tiles, player2Tiles, tileButtons, currentPlayer1, diceVal
                 }
             });
         });
-        // update who the current player is
+    // update who the current player is
         currentPlayer1 = currentPlayer1 === "Player 1" ? "Player 2" : "Player 1";
         window.currentPlayer = currentPlayer1
         // toggle buttons
