@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         // encode the array to json and put the data in gameState.json
         $jsonData = json_encode($gameState);
-        file_put_contents('../data/gameState.json', $jsonData);
+        file_put_contents('../data/boardState.json', $jsonData);
     } else {
         echo 'values are missing';
     }

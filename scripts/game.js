@@ -8,8 +8,7 @@ function updateGameState() {
         // Extract diceValue and currentPlayer from gameState
         let diceValue = gameState.diceValue;
         let currentPlayer = gameState.currentPlayer;
-        let board = gameState.board;
-        let playerName = gameState.playerName;
+
 
         // Display the data on the page
         $("#diceValue").text("Dice result: " + diceValue);
@@ -18,11 +17,7 @@ function updateGameState() {
         // Check if it works
         console.log("diceValue:", diceValue);
         console.log("currentPlayer:", currentPlayer);
-        console.log("board:", board);
-        console.log("playerName:", playerName);
         console.log("wel gelukt");
-
-
 
     })
         .fail(function(xhr, status, error) {
@@ -33,6 +28,31 @@ function updateGameState() {
         });
 }
 
+function updateBoardState() {
+    $.getJSON("data/boardState.json", function(boardState) {
+        console.log("Updated boardState:", boardState);
+
+        // Extract diceValue and currentPlayer from gameState
+        let board = boardState.board;
+        let playerName = boardState.playerName;
+
+        // Display the data on the page
+
+
+
+        // Check if it works
+        console.log("board:", board);
+        console.log("playerName:", playerName);
+        console.log("ook gelukt");
+
+    })
+        .fail(function(xhr, status, error) {
+            console.error("niet gelukt", error);
+            console.error("Error details: " + error);
+            console.error("AJAX request failed with status: " + status);
+            console.error("Error details: " + JSON.stringify(xhr));
+        });
+}
 /**
  * Function that generates a playerboard with numbered tiles that are buttons
  * @param board, HTML tag where the board should be placed in the HTML file
@@ -291,7 +311,8 @@ $(document).ready(function() {
     });
 
     // update game state in the background
-    // setInterval(updateGameState, 500);
+    setInterval(updateGameState, 500);
+    setInterval(updateBoardState, 500);
 });
 
 
