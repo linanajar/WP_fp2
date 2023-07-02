@@ -142,7 +142,20 @@ function submit(player1Tiles, player2Tiles, tileButtons, currentPlayer1, diceVal
 
     // Check if selected tiles sum up to dice value
     sumSelect = calculateSum(selectedTiles)
-
+    if (sumSelect === diceValue) {
+        // close selected tiles
+        closeTiles(selectedTiles, currentPlayerTiles, tileButtons, currentPlayer1)
+        // update who the current player
+        updatePlayer(currentPlayer1)
+        // toggle buttons
+        toggleButtons(rollButton, submitButton);
+        // show whose turn it is
+        showTurnMessage(currentPlayer1)
+    }
+    else {
+    // Show error message
+    window.alert("Selected tiles do not match dice value. Please try again.")
+}
 
 }
 
@@ -158,34 +171,32 @@ function calculateSum(Array) {
     return sum;
 }
 
-function checkIfClose(diceValue, selectedTiles, sumSelect, currentPlayerTiles, tileButtons, currentPlayer1) {
-    if (sumSelect === diceValue) {
-        // Close selected tiles
-        selectedTiles.forEach(function (tile) {
-            let index = currentPlayerTiles.indexOf(tile);
-            currentPlayerTiles[index] = -1; // Mark the tile as closed
-            tileButtons.each(function () {
-                let player = $(this).attr("data-player");
-                let buttonTile = parseInt($(this).attr("data-tile"));
-
-                if (player === currentPlayer1 && buttonTile === tile) {
-                    $(this).prop("disabled", true); // Disable the button to indicate it is closed
-                    $(this).addClass("closed"); // Add a CSS class to visually indicate a closed tile
-                }
-            });
+function closeTiles(selectedTiles, currentPlayerTiles, tileButtons, currentPlayer1) {
+    // Close selected tiles
+    selectedTiles.forEach(function (tile) {
+        let index = currentPlayerTiles.indexOf(tile);
+        currentPlayerTiles[index] = -1; // Mark the tile as closed
+        tileButtons.each(function () {
+            let player = $(this).attr("data-player");
+            let buttonTile = parseInt($(this).attr("data-tile"));
+            if (player === currentPlayer1 && buttonTile === tile) {
+                $(this).prop("disabled", true); // Disable the button to indicate it is closed
+                $(this).addClass("closed"); // Add a CSS class to visually indicate a closed tile
+            }
         });
+    });
+}
+
+function updatePlayer(currentPlayer1) {
     // update who the current player is
         currentPlayer1 = currentPlayer1 === "Player 1" ? "Player 2" : "Player 1";
         window.currentPlayer = currentPlayer1
-        // toggle buttons
-        toggleButtons(rollButton, submitButton);
-        // show message about whose turn it is
-        let messageText = $("#messageText");
-        messageText.text(currentPlayer + "'s turn. Select tiles and roll again.");
-    } else {
-        // Show error message
-        window.alert("Selected tiles do not match dice value. Please try again.")
-    }
+}
+
+function showTurnMessage(currentPlayer) {
+    // show message about whose turn it is
+    let messageText = $("#messageText");
+    messageText.text(currentPlayer + "'s turn. Select tiles and roll again.");
 }
 
 function allowSelection (currentPlayer, tileButtons) {
