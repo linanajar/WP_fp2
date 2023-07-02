@@ -37,6 +37,26 @@ function updateBoardState() {
         let playerName = boardState.playerName;
 
         // Display the data on the page
+        let i = 1
+        board.forEach(function (tile) {
+            if (tile === '-1') {
+                //let index = currentPlayerTiles.indexOf(tile);
+                //currentPlayerTiles[index] = -1; // Mark the tile as closed
+                $(".player-board button").each(function () {
+                    let player = $(this).attr("data-player");
+                    let buttonTile = parseInt($(this).attr("data-tile"));
+                    if (player === playerName && buttonTile === i) {
+                        $(this).prop("disabled", true); // Disable the button to indicate it is closed
+                        $(this).addClass("closed"); // Add a CSS class to visually indicate a closed tile
+                    }
+                });
+            }
+            i += 1
+            if (i === 9){
+                i = 0
+            }
+        });
+
 
 
 
@@ -99,8 +119,8 @@ function postGameboard(board, playerName) {
  */
 function rollDice(rollButton, player1Tiles, player2Tiles) {
     // define important variables
-    let submitButton = $("#submit-choice");
     let tileButtons = $(".player-board button");
+    let submitButton = $("#submit-choice");
     let currentPlayer = window.currentPlayer
     var diceResult = $("#diceResult");
     // roll dice
