@@ -68,7 +68,8 @@ function updateGameState() {
 }
 
 
-function rollDice(rollButton, submitButton, tileButtons, currentPlayer, player1Tiles, player2Tiles) {
+function rollDice(rollButton, submitButton, tileButtons, player1Tiles, player2Tiles) {
+    var currentPlayer = window.currentPlayer
     let diceResult = $("#diceResult");
     let diceValue = Math.floor(Math.random() * 11) + 2;
     diceResult.text("Dice result: " + diceValue);
@@ -94,6 +95,7 @@ function rollDice(rollButton, submitButton, tileButtons, currentPlayer, player1T
     });
     checkEndGame(tileButtons, diceValue, currentPlayer)
     toggleButtons(rollButton, submitButton);
+    allowSelection(currentPlayer, tileButtons);
     submitButton.on("click", function () {
         submit(player1Tiles, player2Tiles, tileButtons, currentPlayer, diceValue)
         // toggle buttons
@@ -127,9 +129,9 @@ function checkEndGame(tileButtons, diceValue, currentPlayer) {
     }
 };
 
-function submit(player1Tiles, player2Tiles, tileButtons, currentPlayer, diceValue) {
+function submit(player1Tiles, player2Tiles, tileButtons, currentPlayer1, diceValue) {
     // find tiles attached to current player
-    let currentPlayerTiles = currentPlayer === "Player 1" ? player1Tiles : player2Tiles;
+    let currentPlayerTiles = currentPlayer1 === "Player 1" ? player1Tiles : player2Tiles;
 
     // Find selected tiles
     let selectedTiles = [];
@@ -137,7 +139,7 @@ function submit(player1Tiles, player2Tiles, tileButtons, currentPlayer, diceValu
         let player = $(this).attr("data-player");
         let tile = parseInt($(this).attr("data-tile"));
 
-        if (player === currentPlayer && tile !== -1 && $(this).hasClass("selected")) {
+        if (player === currentPlayer1 && tile !== -1 && $(this).hasClass("selected")) {
             selectedTiles.push(tile);
             $(this).removeClass("selected");
         }
@@ -159,13 +161,14 @@ function submit(player1Tiles, player2Tiles, tileButtons, currentPlayer, diceValu
                 let player = $(this).attr("data-player");
                 let buttonTile = parseInt($(this).attr("data-tile"));
 
-                if (player === currentPlayer && buttonTile === tile) {
+                if (player === currentPlayer1 && buttonTile === tile) {
                     $(this).prop("disabled", true); // Disable the button to indicate it is closed
                     $(this).addClass("closed"); // Add a CSS class to visually indicate a closed tile
                 }
             });
         });
-        currentPlayer = currentPlayer === "Player 1" ? "Player 2" : "Player 1";
+        currentPlayer1 = currentPlayer1 === "Player 1" ? "Player 2" : "Player 1";
+        window.currentPlayer = currentPlayer1
         let messageText = $("#messageText");
         messageText.text(currentPlayer + "'s turn. Select tiles and roll again.");
     } else {
@@ -173,11 +176,25 @@ function submit(player1Tiles, player2Tiles, tileButtons, currentPlayer, diceValu
     }
 }
 
+function allowSelection (currentPlayer, tileButtons) {
+    // Add event listeners to tile buttons
+    tileButtons.on("click", function () {
+        // Add event listeners to tile buttons
+        let player = $(this).attr("data-player");
+        let tile = parseInt($(this).attr("data-tile"));
+
+        if (player === currentPlayer && tile !== -1) {
+            // Toggle the selection of the tile
+            $(this).toggleClass("selected");
+        }
+    });
+}
+
 
 
 $(document).ready(function() {
     // generate player boards
-    let currentPlayer = "Player 1";
+    window.currentPlayer = "Player 1";
     let player1Board = $("#player1");
     let player2Board = $("#player2");
     // Arrays to hold the player tiles
@@ -194,19 +211,6 @@ $(document).ready(function() {
     let tileButtons = $(".player-board button");
     rollButton.on("click", function () {
         rollDice(rollButton, submitButton, tileButtons, currentPlayer, player1Tiles, player2Tiles)
-    });
-
-
-    // Add event listeners to tile buttons
-    tileButtons.on("click", function () {
-        // Add event listeners to tile buttons
-        let player = $(this).attr("data-player");
-        let tile = parseInt($(this).attr("data-tile"));
-
-        if (player === currentPlayer && tile !== -1) {
-            // Toggle the selection of the tile
-            $(this).toggleClass("selected");
-        }
     });
 
     setInterval(updateGameState, 3000);
