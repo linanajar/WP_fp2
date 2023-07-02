@@ -1,4 +1,6 @@
-// Update the game state using ajax get function
+/**
+ * update game state without reloading the whole page using AJAX
+ */
 function updateGameState() {
     $.getJSON("data/gameState.json", function(gameState) {
         console.log("Updated gameState:", gameState);
@@ -33,7 +35,12 @@ function updateGameState() {
         });
 }
 
-// Generates player boards
+/**
+ * Function that generates a playerboard with numbered tiles that are buttons
+ * @param board, HTML tag where the board should be placed in the HTML file
+ * @param playerName, a string with the name of the player
+ * @param playerTiles, an empty array where the buttons can be added
+ */
 function generatePlayerBoard(board, playerName, playerTiles) {
     for (let i = 1; i <= 9; i++) {
         let button = $("<button></button>");
@@ -63,6 +70,13 @@ function generatePlayerBoard(board, playerName, playerTiles) {
 
 }
 
+/**
+ * Rolls the dice and starts all functions that should only happen once the dice
+ * are rolled
+ * @param rollButton, the button that is clicked when the player wants to roll the dice
+ * @param player1Tiles, array of the tiles belonging to player 1
+ * @param player2Tiles, array of the tiles belonging to player 2
+ */
 function rollDice(rollButton, player1Tiles, player2Tiles) {
     // define important variables
     let submitButton = $("#submit-choice");
@@ -100,13 +114,22 @@ function rollDice(rollButton, player1Tiles, player2Tiles) {
     });
 }
 
-//toggle visibility of roll and hide button
+/**
+ * toggle which button is visible
+ * @param rollButton, the button someone presses when they want to roll the dice
+ * @param submitButton, button for submitting the selected tiles
+ */
 function toggleButtons(rollButton, submitButton) {
     rollButton.toggle();
     submitButton.toggle();
 }
 
-// check if game should be ended
+/**
+ * checks if the game should be ended by seeing if the sum of open tiles is less than the dice value
+ * @param tileButtons, all the buttons that are used as tiles
+ * @param diceValue, the value of the latest dice roll
+ * @param currentPlayer, the name of the current player
+ */
 function checkEndGame(tileButtons, diceValue, currentPlayer) {
     // Check if sum of open tiles is less than dice value
     openTiles = [];
@@ -124,6 +147,17 @@ function checkEndGame(tileButtons, diceValue, currentPlayer) {
     }
 }
 
+/**
+ * submits the selected tiles if they are correct and starts all necessary functions
+ * , shows an error message if not
+ * @param player1Tiles, array of the tiles of player number one
+ * @param player2Tiles, array of the tiles of player number two
+ * @param tileButtons, all buttons that are used as tiles
+ * @param currentPlayer1, name of the current player (not necessarily player 1)
+ * @param diceValue, value of the latest dice throw
+ * @param rollButton, button to press to roll the dice
+ * @param submitButton, button to press to submit selected values
+ */
 function submit(player1Tiles, player2Tiles, tileButtons, currentPlayer1, diceValue, rollButton, submitButton) {
     // find tiles attached to current player
     let currentPlayerTiles = currentPlayer1 === "Player 1" ? player1Tiles : player2Tiles;
@@ -162,7 +196,7 @@ function submit(player1Tiles, player2Tiles, tileButtons, currentPlayer1, diceVal
 /**
  * A function that adds all values of an array consisting of numbers to each other
  * @param Array, which consists solely of integers
- * @returns integer, the values in the array added up
+ * @returns sum, an integer, the values in the array added up
  */
 function calculateSum(Array) {
     let sum = Array.reduce(function (acc, curr) {
@@ -171,6 +205,13 @@ function calculateSum(Array) {
     return sum;
 }
 
+/**
+ * Closes the selected tiles
+ * @param selectedTiles, the selected tiles
+ * @param currentPlayerTiles, the tiles that belong to the current player
+ * @param tileButtons, the buttons belonging to all the tiles
+ * @param currentPlayer1, the current player's name (not necessarily player 1)
+ */
 function closeTiles(selectedTiles, currentPlayerTiles, tileButtons, currentPlayer1) {
     // Close selected tiles
     selectedTiles.forEach(function (tile) {
@@ -187,18 +228,32 @@ function closeTiles(selectedTiles, currentPlayerTiles, tileButtons, currentPlaye
     });
 }
 
+/**
+ * Updates the name of the current player
+ * @param currentPlayer1, the name of the current player
+ */
 function updatePlayer(currentPlayer1) {
     // update who the current player is
         currentPlayer1 = currentPlayer1 === "Player 1" ? "Player 2" : "Player 1";
         window.currentPlayer = currentPlayer1
 }
 
+/**
+ * Sends the users a message about whose turn it is
+ * @param currentPlayer, name of the (new) current player
+ */
 function showTurnMessage(currentPlayer) {
     // show message about whose turn it is
     let messageText = $("#messageText");
     messageText.text(currentPlayer + "'s turn. Select tiles and roll again.");
 }
 
+/**
+ * enables the selecting of buttons of the tiles that belong to the current player
+ * and are not closed yet
+ * @param currentPlayer, name of the current player
+ * @param tileButtons, all the buttons that are used as tiles
+ */
 function allowSelection (currentPlayer, tileButtons) {
     // Add event listeners to tile buttons
     tileButtons.off('click').on("click", function () {
@@ -215,7 +270,7 @@ function allowSelection (currentPlayer, tileButtons) {
 
 
 $(document).ready(function() {
-    // generate player boards
+    // define important variables
     window.currentPlayer = "Player 1";
     let player1Board = $("#player1");
     let player2Board = $("#player2");
@@ -232,7 +287,7 @@ $(document).ready(function() {
     rollButton.on("click", function () {
         rollDice(rollButton, player1Tiles, player2Tiles)
     });
-
+    // update game state in the background
     setInterval(updateGameState, 3000);
 });
 
