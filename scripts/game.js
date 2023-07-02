@@ -121,6 +121,47 @@ function checkEndGame(tileButtons, diceValue, currentPlayer) {
     }
 };
 
+function submit() {
+    // change current player
+    let currentPlayerTiles = currentPlayer === "Player 1" ? player1Tiles : player2Tiles;
+
+    // Find selected tiles
+    let selectedTiles = [];
+    tileButtons.each(function () {
+        let player = $(this).attr("data-player");
+        let tile = parseInt($(this).attr("data-tile"));
+
+        if (player === currentPlayer && tile !== -1 && $(this).hasClass("selected")) {
+            selectedTiles.push(tile);
+            $(this).removeClass("selected");
+        }
+    });
+    console.log(selectedTiles)
+
+
+    // Check if selected tiles sum up to dice value
+    let sum = selectedTiles.reduce(function (acc, curr) {
+        return acc + curr;
+    }, 0);
+
+    if (sum === diceValue) {
+        // Close selected tiles
+        selectedTiles.forEach(function (tile) {
+            let index = currentPlayerTiles.indexOf(tile);
+            currentPlayerTiles[index] = -1; // Mark the tile as closed
+            tileButtons.each(function () {
+                let player = $(this).attr("data-player");
+                let buttonTile = parseInt($(this).attr("data-tile"));
+
+                if (player === currentPlayer && buttonTile === tile) {
+                    $(this).prop("disabled", true); // Disable the button to indicate it is closed
+                    $(this).addClass("closed"); // Add a CSS class to visually indicate a closed tile
+                }
+            });
+        });
+    }
+}
+
 
 
 $(document).ready(function() {
@@ -158,49 +199,11 @@ $(document).ready(function() {
         }
     });
 
-
-    let submitButton = $("#submit-choice");
     let messageText = $("#messageText");
 
 
     submitButton.on("click", function () {
-        let currentPlayerTiles = currentPlayer === "Player 1" ? player1Tiles : player2Tiles;
-
-        // Find selected tiles
-        let selectedTiles = [];
-        tileButtons.each(function () {
-            let player = $(this).attr("data-player");
-            let tile = parseInt($(this).attr("data-tile"));
-
-            if (player === currentPlayer && tile !== -1 && $(this).hasClass("selected")) {
-                selectedTiles.push(tile);
-                $(this).removeClass("selected");
-            }
-        });
-        console.log(selectedTiles)
-
-
-        // Check if selected tiles sum up to dice value
-        let sum = selectedTiles.reduce(function (acc, curr) {
-            return acc + curr;
-        }, 0);
-
-        if (sum === diceValue) {
-            // Close selected tiles
-            selectedTiles.forEach(function (tile) {
-                let index = currentPlayerTiles.indexOf(tile);
-                currentPlayerTiles[index] = -1; // Mark the tile as closed
-                tileButtons.each(function () {
-                    let player = $(this).attr("data-player");
-                    let buttonTile = parseInt($(this).attr("data-tile"));
-
-                    if (player === currentPlayer && buttonTile === tile) {
-                        $(this).prop("disabled", true); // Disable the button to indicate it is closed
-                        $(this).addClass("closed"); // Add a CSS class to visually indicate a closed tile
-                    }
-                });
-            });
-        }
+        submit
         // toggle buttons
         toggleButtons(rollButton, submitButton);
 
