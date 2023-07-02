@@ -45,8 +45,8 @@ function updateGameState() {
         console.log("Updated gameState:", gameState);
 
         // Extract diceValue and currentPlayer from gameState
-        let diceValue = gameState.diceValue;
-        let currentPlayer = gameState.currentPlayer;
+        var diceValue = gameState.diceValue;
+        var currentPlayer = gameState.currentPlayer;
 
         // Display the data on the page
         $("#diceValue").text("Dice result: " + diceValue);
@@ -68,7 +68,7 @@ function updateGameState() {
 }
 
 
-function rollDice(rollButton, submitButton, tileButtons, currentPlayer) {
+function rollDice(rollButton, submitButton, tileButtons, currentPlayer, player1Tiles, player2Tiles) {
     let diceResult = $("#diceResult");
     let diceValue = Math.floor(Math.random() * 11) + 2;
     diceResult.text("Dice result: " + diceValue);
@@ -94,6 +94,15 @@ function rollDice(rollButton, submitButton, tileButtons, currentPlayer) {
     });
     checkEndGame(tileButtons, diceValue, currentPlayer)
     toggleButtons(rollButton, submitButton);
+    submitButton.on("click", function () {
+        submit(player1Tiles, player2Tiles, tileButtons, currentPlayer, diceValue)
+        // toggle buttons
+        toggleButtons(rollButton, submitButton);
+
+        // Switch to next player
+        currentPlayer = currentPlayer === "Player 1" ? "Player 2" : "Player 1";
+        messageText.text(currentPlayer + "'s turn. Select tiles and roll again.");
+    });
 };
 
 //toggle visibility of roll and hide button
@@ -121,7 +130,7 @@ function checkEndGame(tileButtons, diceValue, currentPlayer) {
     }
 };
 
-function submit() {
+function submit(player1Tiles, player2Tiles, tileButtons, currentPlayer, diceValue) {
     // change current player
     let currentPlayerTiles = currentPlayer === "Player 1" ? player1Tiles : player2Tiles;
 
@@ -166,7 +175,6 @@ function submit() {
 
 $(document).ready(function() {
     // generate player boards
-    let diceValue;
     let currentPlayer = "Player 1";
     let player1Board = $("#player1");
     let player2Board = $("#player2");
@@ -182,9 +190,9 @@ $(document).ready(function() {
     let rollButton = $("#rollButton");
     let submitButton = $("#submit-choice");
     let tileButtons = $(".player-board button");
-    rollButton.on("click", rollDice(rollButton, submitButton, tileButtons, currentPlayer));
-
-
+    rollButton.on("click", function () {
+        rollDice(rollButton, submitButton, tileButtons, currentPlayer, player1Tiles, player2Tiles)
+    });
 
 
     // Add event listeners to tile buttons
@@ -199,19 +207,7 @@ $(document).ready(function() {
         }
     });
 
-    let messageText = $("#messageText");
-
-
-    submitButton.on("click", function () {
-        submit
-        // toggle buttons
-        toggleButtons(rollButton, submitButton);
-
-        // Switch to next player
-        currentPlayer = currentPlayer === "Player 1" ? "Player 2" : "Player 1";
-        messageText.text(currentPlayer + "'s turn. Select tiles and roll again.");
-        });
-    setInterval(updateGameState,3000);
-    });
+    setInterval(updateGameState, 3000);
+});
 
 
