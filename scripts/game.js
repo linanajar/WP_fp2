@@ -37,7 +37,7 @@ function updateBoardState() {
         let playerName = boardState.playerName;
 
         // Display the data on the page
-        let i = 1
+        let tileNumber = 1
         board.forEach(function (tile) {
             if (tile === '-1') {
                 //let index = currentPlayerTiles.indexOf(tile);
@@ -45,14 +45,14 @@ function updateBoardState() {
                 $(".player-board button").each(function () {
                     let player = $(this).attr("data-player");
                     let buttonTile = parseInt($(this).attr("data-tile"));
-                    if (player === playerName && buttonTile === i) {
+                    if (player === playerName && buttonTile === tileNumber) {
                         $(this).prop("disabled", true); // Disable the button to indicate it is closed
                         $(this).addClass("closed"); // Add a CSS class to visually indicate a closed tile
                     }
                 });
             }
-            i += 1
-            if (i === 9){
+            tileNumber += 1
+            if (tileNumber === 10){
                 i = 0
             }
         });
