@@ -9,6 +9,7 @@ function generatePlayerBoard(board, playerName, playerTiles) {
         playerTiles.push(i); // Assign the tile to the respective player's array
     }
 }
+
 // Old code, doesn't work
 // Get diceValue from gameState.json
 // function updateGameState() {
@@ -69,9 +70,8 @@ function updateGameState() {
 
 
 function rollDice(rollButton, submitButton, tileButtons, currentPlayer) {
-    let diceResult = $("#diceResult");
     let diceValue = Math.floor(Math.random() * 11) + 2;
-    diceResult.text("Dice result: " + diceValue);
+    $("#diceValue").text("Dice result: " + diceValue);
     console.log("diceValue:", diceValue);
 
     // Posts diceValue and currentPlayer to gameState.json to retrieve later
@@ -94,7 +94,7 @@ function rollDice(rollButton, submitButton, tileButtons, currentPlayer) {
     });
     checkEndGame(tileButtons, diceValue, currentPlayer)
     toggleButtons(rollButton, submitButton);
-};
+}
 
 //toggle visibility of roll and hide button
 function toggleButtons(rollButton, submitButton) {
@@ -119,8 +119,7 @@ function checkEndGame(tileButtons, diceValue, currentPlayer) {
     if(sum < diceValue) {
         window.location.href = "http://localhost:8888/WP23/WP_fp2/endpage.php";
     }
-};
-
+}
 function submit() {
     // change current player
     let currentPlayerTiles = currentPlayer === "Player 1" ? player1Tiles : player2Tiles;
@@ -182,7 +181,9 @@ $(document).ready(function() {
     let rollButton = $("#rollButton");
     let submitButton = $("#submit-choice");
     let tileButtons = $(".player-board button");
-    rollButton.on("click", rollDice(rollButton, submitButton, tileButtons, currentPlayer));
+    rollButton.on("click", function() {
+        rollDice(rollButton, submitButton, tileButtons, currentPlayer);
+    });
 
 
 
