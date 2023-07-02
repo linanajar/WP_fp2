@@ -40,8 +40,6 @@ function updateBoardState() {
         let tileNumber = 1
         board.forEach(function (tile) {
             if (tile === '-1') {
-                //let index = currentPlayerTiles.indexOf(tile);
-                //currentPlayerTiles[index] = -1; // Mark the tile as closed
                 $(".player-board button").each(function () {
                     let player = $(this).attr("data-player");
                     let buttonTile = parseInt($(this).attr("data-tile"));
@@ -56,8 +54,6 @@ function updateBoardState() {
                 i = 0
             }
         });
-
-
 
 
         // Check if it works
@@ -129,7 +125,17 @@ function rollDice(rollButton, player1Tiles, player2Tiles) {
     diceResult.text("Dice result: " + diceValue);
     console.log("diceValue:", diceValue);
 
-    // Posts diceValue and currentPlayer to gameState.json to retrieve later
+    postGameState(diceValue, currentPlayer) // Posts diceValue and currentPlayer to gameState.json to retrieve later
+
+    checkEndGame(tileButtons, diceValue, currentPlayer)
+    toggleButtons(rollButton, submitButton);
+    allowSelection(currentPlayer, tileButtons);
+    submitButton.off().on("click", function () {
+        submit(player1Tiles, player2Tiles, tileButtons, currentPlayer, diceValue, rollButton, submitButton)
+    });
+}
+
+function postGameState(diceValue, currentPlayer){
     $.ajax({
         url: "scripts/add_dicevalue_currentplayer.php",
         method: "POST",
@@ -145,12 +151,6 @@ function rollDice(rollButton, player1Tiles, player2Tiles) {
         error: function (error) {
             console.error("nee", error);
         }
-    });
-    checkEndGame(tileButtons, diceValue, currentPlayer)
-    toggleButtons(rollButton, submitButton);
-    allowSelection(currentPlayer, tileButtons);
-    submitButton.off().on("click", function () {
-        submit(player1Tiles, player2Tiles, tileButtons, currentPlayer, diceValue, rollButton, submitButton)
     });
 }
 
@@ -219,10 +219,12 @@ function submit(player1Tiles, player2Tiles, tileButtons, currentPlayer1, diceVal
     if (sumSelect === diceValue) {
         // close selected tiles
         closeTiles(selectedTiles, currentPlayerTiles, tileButtons, currentPlayer1)
-        // post game-board to gameState.json
-        postGameboard(currentPlayerTiles, currentPlayer1)
         // update who the current player
         updatePlayer(currentPlayer1)
+        // post game-board to gameState.json
+        postGameboard(currentPlayerTiles, window.currentPlayer)
+        // Post diceValue and currentPlayer to gameState.json to retrieve later
+        postGameState(diceValue, currentPlayer1)
         // toggle buttons
         toggleButtons(rollButton, submitButton);
         // show whose turn it is
