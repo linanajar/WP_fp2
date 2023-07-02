@@ -9,6 +9,7 @@ function updateGameState() {
 
         // Display the data on the page
         $("#diceValue").text("Dice result: " + diceValue);
+        $("#currentPlayer").text("Current Player: " + currentPlayer);
 
 
         // Check if it works
@@ -18,8 +19,10 @@ function updateGameState() {
 
         // // Get playerboards/tiles data from gameState.json
         // // Werkt nog niet
-        /* let player1Board = $("#player1");
-        let player2Board = $("#player2"); */
+        let player1Board = $("#player1");
+        let player2Board = $("#player2");
+
+
 
     })
         .fail(function(xhr, status, error) {
@@ -65,11 +68,12 @@ function rollDice(rollButton, player1Tiles, player2Tiles) {
     let submitButton = $("#submit-choice");
     let tileButtons = $(".player-board button");
     let currentPlayer = window.currentPlayer
-    let diceResult = $("#diceResult");
+    var diceResult = $("#diceResult");
     // roll dice
     let diceValue = Math.floor(Math.random() * 11) + 2;
     // show result
     diceResult.text("Dice result: " + diceValue);
+    console.log("diceValue:", diceValue);
 
     // Posts diceValue and currentPlayer to gameState.json to retrieve later
     $.ajax({
@@ -112,11 +116,10 @@ function checkEndGame(tileButtons, diceValue, currentPlayer) {
         if (player === currentPlayer && !($(this).hasClass("closed"))) {
             openTiles.push(tile);
         }})
-    // Check if open tiles sum up to more than dice value
-    let sum = openTiles.reduce(function (acc, curr) {
-        return acc + curr;
-    }, 0);
-    if(sum < diceValue) {
+    // Check if open tiles sum up to less than dice value and end game if so
+    let sumOpen = calculateSum(openTiles)
+    if(sumOpen < diceValue) {
+        // Redirect to endpage
         window.location.href = "http://localhost:8888/WP23/WP_fp2/endpage.php";
     }
 }
@@ -137,39 +140,63 @@ function submit(player1Tiles, player2Tiles, tileButtons, currentPlayer1, diceVal
         }
     });
 
-
     // Check if selected tiles sum up to dice value
-    let sum = selectedTiles.reduce(function (acc, curr) {
-        return acc + curr;
-    }, 0);
-
-    if (sum === diceValue) {
-        // Close selected tiles
-        selectedTiles.forEach(function (tile) {
-            let index = currentPlayerTiles.indexOf(tile);
-            currentPlayerTiles[index] = -1; // Mark the tile as closed
-            tileButtons.each(function () {
-                let player = $(this).attr("data-player");
-                let buttonTile = parseInt($(this).attr("data-tile"));
-
-                if (player === currentPlayer1 && buttonTile === tile) {
-                    $(this).prop("disabled", true); // Disable the button to indicate it is closed
-                    $(this).addClass("closed"); // Add a CSS class to visually indicate a closed tile
-                }
-            });
-        });
-        // update who the current player is
-        currentPlayer1 = currentPlayer1 === "Player 1" ? "Player 2" : "Player 1";
-        window.currentPlayer = currentPlayer1
+    sumSelect = calculateSum(selectedTiles)
+    if (sumSelect === diceValue) {
+        // close selected tiles
+        closeTiles(selectedTiles, currentPlayerTiles, tileButtons, currentPlayer1)
+        // update who the current player
+        updatePlayer(currentPlayer1)
         // toggle buttons
         toggleButtons(rollButton, submitButton);
-        // show message about whose turn it is
-        let messageText = $("#messageText");
-        messageText.text(currentPlayer + "'s turn. Select tiles and roll again.");
-    } else {
-        // Show error message
-        window.alert("Selected tiles do not match dice value. Please try again.")
+        // show whose turn it is
+        showTurnMessage(currentPlayer1)
     }
+    else {
+    // Show error message
+    window.alert("Selected tiles do not match dice value. Please try again.")
+}
+
+}
+
+/**
+ * A function that adds all values of an array consisting of numbers to each other
+ * @param Array, which consists solely of integers
+ * @returns integer, the values in the array added up
+ */
+function calculateSum(Array) {
+    let sum = Array.reduce(function (acc, curr) {
+        return acc + curr;
+    }, 0);
+    return sum;
+}
+
+function closeTiles(selectedTiles, currentPlayerTiles, tileButtons, currentPlayer1) {
+    // Close selected tiles
+    selectedTiles.forEach(function (tile) {
+        let index = currentPlayerTiles.indexOf(tile);
+        currentPlayerTiles[index] = -1; // Mark the tile as closed
+        tileButtons.each(function () {
+            let player = $(this).attr("data-player");
+            let buttonTile = parseInt($(this).attr("data-tile"));
+            if (player === currentPlayer1 && buttonTile === tile) {
+                $(this).prop("disabled", true); // Disable the button to indicate it is closed
+                $(this).addClass("closed"); // Add a CSS class to visually indicate a closed tile
+            }
+        });
+    });
+}
+
+function updatePlayer(currentPlayer1) {
+    // update who the current player is
+        currentPlayer1 = currentPlayer1 === "Player 1" ? "Player 2" : "Player 1";
+        window.currentPlayer = currentPlayer1
+}
+
+function showTurnMessage(currentPlayer) {
+    // show message about whose turn it is
+    let messageText = $("#messageText");
+    messageText.text(currentPlayer + "'s turn. Select tiles and roll again.");
 }
 
 function allowSelection (currentPlayer, tileButtons) {
@@ -208,3 +235,5 @@ $(document).ready(function() {
 
     setInterval(updateGameState, 3000);
 });
+
+
